@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document Manager</title>
+    <link href="/assets/images/favicon.png" rel="icon">
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/jqueryui/themes/flick/jquery-ui.min.css">
+    <link rel="stylesheet" href="/lib/jtable/lib/themes/jqueryui/jtable_jqueryui.min.css">
+    <link href="/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/assets/stylesheets/style.css">
+    <link rel="stylesheet" href="/assets/stylesheets/login.css">
+    <link rel="stylesheet" href="/assets/stylesheets/info.css">
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="/lib/jtable/lib/jquery.jtable.min.js"></script>
+    <script src="/lib/angular/angular.min.js"></script>
+    <script src="/lib/angular-messages/angular-messages.min.js"></script>
+    <script src="/lib/ngstorage/ngStorage.min.js"></script>
+    <script src="/lib/angular-route/angular-route.min.js"></script>
+    <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/lib/bootstrap-fileinput/js/plugins/piexif.min.js" type="text/javascript"></script>
+    <script src="/lib/bootstrap-fileinput/js/plugins/sortable.min.js" type="text/javascript"></script>
+    <script src="/lib/bootstrap-fileinput/js/plugins/purify.min.js" type="text/javascript"></script>
+    <script src="/lib/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>
+    <script src="/lib/bootstrap-fileinput/themes/fa/theme.min.js" type="text/javascript"></script>
+
+    <!-- Custom scripts -->
+    <script src="/assets/javascripts/statistic.component.js"></script>
+    <script src="/assets/javascripts/employee.component.js"></script>
+    <script src="/assets/javascripts/account.component.js"></script>
+    <script src="/assets/javascripts/customer.component.js"></script>
+    <script src="/assets/javascripts/consultancy.component.js"></script>
+    <script src="/assets/javascripts/study.component.js"></script>
+    <script src="/assets/javascripts/seminar.component.js"></script>
+    <script src="/assets/javascripts/uploader.component.js"></script>
+    <script src="/assets/javascripts/script.js"></script>
+</head>
+
+<body ng-app="app" ng-cloak>
+    <header>
+        <div class="container-fluid" style="padding: 0">
+            <div class="jumbotron row">
+                <div class="col-sm-6 col-xs-12">
+                    <img src="/assets/images/fpt.png" alt="">
+                    <img src="/assets/images/logo.png" alt="">
+                </div>
+                <div class="col-sm-2 col-sm-offset-4 col-xs-12" style="padding-top: 10px" ng-if="isAuthenticated()">
+                    <a ui-sref="info"><img src="/assets/images/user.png" alt="" style="width: 40px; border-radius: 25px"></a>
+                    <button class="btn btn-default dropdown-toggle icon" style="border: none; background: none; font-weight: bold" type="button"
+                        id="menu1" data-toggle="dropdown">{{getUsername()}}</button>
+                    <ul class="dropdown-menu list-group account-menu" role="menu" aria-labelledby="menu1">
+                        <li class="list-group-item main-select" role="presentation"><a role="menuitem" tabindex="-1" ui-sref="info" ui-sref-opts="{reload:true}">Thông tin cá nhân</a></li>
+                        <li class="list-group-item main-select" role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" ng-click="logout()">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav class="navbar main-theme" data-spy="affix" data-offset-top="115">
+                <div class="container-fluid" style="margin-left: 10px">
+                    <div class="navbar-header">
+                        <button id="collapseButton" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".collapse" ng-if="isAuthenticated()">
+                            <i class="fa fa-bars" aria-hidden="true"></i>
+                        </button>
+                        <a class="navbar-brand" href="javascript:;" ng-click="toggleSidebar()" ng-show="sidebarOptions.length > 0"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+                        <a class="navbar-brand space-between-brand" ui-sref="dashboard"><i class="fa fa-home icon" aria-hidden="true" style="color: white !important"></i></a>
+                    </div>
+                    <div class="collapse navbar-collapse" ng-if="isAuthenticated()">
+                        <ul class="nav navbar-nav">
+                            <li class="main-select" ng-class="{ active: option == 'info'}"><a ui-sref="info">Thông tin cá nhân</a></li>
+                            <li class="main-select" ng-class="{ active: option == 'customer'}"><a ui-sref="customer">Khách hàng</a></li>
+                            <li class="main-select" ng-class="{ active: option == 'consultancy'}"><a ui-sref="consultancy.list({ mode: 'consulting' })">Tư vấn</a></li>
+                            <li class="main-select" ng-class="{ active: option == 'employee'}"><a ui-sref="employee">Nhân viên</a></li>
+                            <li class="main-select" ng-class="{ active: option == 'study'}"><a ui-sref="study">Nghiên cứu</a></li>
+                            <li class="main-select" ng-class="{ active: option == 'seminar'}"><a ui-sref="seminar">Hội thảo</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="main-select"><a ui-sref="info"><span class="glyphicon glyphicon-user"></span> Thông tin cá nhân</a></li>
+                            <li class="main-select"><a href="javascript:;" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="loading animation-slide" ng-show="isLoading">
+        <i class="fa fa-spinner fa-spin"></i> LOADING...
+    </div>
+    <div class="container-fluid" style="padding: 0; background: white">
+        <div class="sidebar-container" data-spy="affix" data-offset-top="115">
+            <div class="sidebar main-theme small" ng-show="sidebarOptions.length > 0">
+                <div class="sidebar-content">
+                    <h3 class="side-title">CHỨC NĂNG</h3>
+                    <ul class="list-unstyled">
+                        <li class="main-select" ng-repeat="sidebarOption in sidebarOptions" ng-class="{ 'active' : sidebarOption.isActive}">
+                            <a ui-sref="{{sidebarOption.link}}">{{sidebarOption.display}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xs-12" ng-class="sidebarOptions.length > 0 ? 'col-sm-10' : 'col-sm-12'"> -->
+        <div ui-view class="container-fluid animation-zoom content col-sm-10 col-sm-offset-1 col-xs-12" id="content"></div>
+        <!-- </div> -->
+    </div>
+    <footer>
+        <nav class="navbar" style="background: #cfcfcf">
+            <div class="col-sm-6 col-sm-offset-3 text-center">
+                <span id="footerTitle">Copy rights ® 2017 FIS Services HCM. All rights reserved!</span>
+            </div>
+        </nav>
+    </footer>
+</body>
+
+</html>
+
+</html>

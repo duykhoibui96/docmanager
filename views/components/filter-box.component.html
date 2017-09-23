@@ -1,0 +1,25 @@
+<div id="{{filterId}}" style="margin-top: 20px; margin-bottom: 20px">
+    <form class="row" ng-submit="startFiltering()">
+        <div class="col-sm-4 col-xs-12" style="padding-bottom: 10px" ng-style="{ opacity: mode == 'recent' ? 0.5 : 1 }">
+            <label for="">Bắt đầu</label>
+            <input type="text" class="form-control custom-input begin-date" ng-disabled="mode == 'recent'" ng-model="startDate" required>
+        </div>
+        <div class="col-sm-4 col-xs-12" style="padding-bottom: 10px" ng-style="{ opacity: mode == 'recent' ? 0.5 : 1 }">
+            <label for="">Kết thúc</label>
+            <input type="text" class="form-control custom-input end-date" ng-disabled="mode == 'recent'" ng-model="endDate" required>
+        </div>
+        <div class="col-sm-4 col-xs-12" style="padding-bottom: 10px">
+            <label for="">Khoảng thời gian</label>
+            <select class="form-control custom-input" ng-model="recentDays" style="width: 100%">
+                <option value="10">10 ngày gần đây</option>
+                <option value="15">15 ngày gần đây</option>
+                <option value="20">20 ngày gần đây</option>
+                <option value="30">30 ngày gần đây</option>
+                <option value="0">Tùy chỉnh</option>
+            </select>
+        </div>
+        <div class="text-right" style="padding-right: 15px">
+            <button type="submit" class="button has-icon primary submit" style="margin-top: 30px">tiến hành lọc</button>
+        </div>
+    </form>
+</div>

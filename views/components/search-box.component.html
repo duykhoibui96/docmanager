@@ -1,0 +1,15 @@
+<form class="form-inline text-right" ng-submit="search()" style="margin-bottom: 20px; margin-top: 20px;padding: 20px">
+    <div class="form-group" style="margin-right: 10px">
+        <select class="form-control custom-input" ng-model="selectedCat">
+                            <option ng-repeat="x in searchCat" value="{{x.value}}">{{x.name}}</option>
+                        </select>
+    </div>
+    <div class="input-group">
+        <input type="text" ng-model="searchText" name="searchText" class="form-control custom-input" placeholder="Tìm kiếm theo chỉ mục" style="width: 400px">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit" style="border: none; background: transparent">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+        </div>
+    </div>
+</form>

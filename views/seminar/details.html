@@ -1,0 +1,53 @@
+<div class="text-right">
+    <a ui-sref="seminar.list">Xem danh sách hội thảo</a>
+</div>
+<div class="title title-icon-details">
+    thông tin hội thảo
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <form ng-submit="update()" class="form-horizontal custom-form">
+            <div class="form-group">
+                <label>Mã hội thảo</label>
+                <input type="number" name="SeminarID" class="form-control custom-input" ng-model="info.SeminarID" value="{{mainInfo.SeminarID}}"
+                    disabled>
+            </div>
+            <div class="form-group">
+                <label>Tên hội thảo</label>
+                <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
+                    required>
+            </div>
+            <div class="form-group">
+                <label>Nội dung nghiên cứu</label>
+                <input type="text" name="Content" class="form-control custom-input" ng-model="info.Content" value="{{mainInfo.Content}}"
+                    ng-disable="isLoading" required>
+            </div>
+            <div class="form-group">
+                <label style="display: block">Nhân viên chia sẻ</label>
+                <!-- <div style="display: inline-block; position: relative; top: 8px">
+                            <a ui-sref="seminar.details({ SeminarID: info.Seminar })"><span class="fa fa-2x fa-user"></span></a>
+                        </div> -->
+                <select class="form-control custom-input" ng-model="info.SharingEmpl" style="display: inline-block">
+                                            <option ng-repeat="obj in employeeList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
+                                        </select>
+
+            </div>
+            <div class="form-group">
+                <label>Thời gian nghiên cứu</label>
+                <input type="text" name="Time" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" ng-disable="isLoading"
+                    required date-picker>
+            </div>
+            <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                <button type="submit" class="button has-icon primary submit">
+                                                            <div ng-show="isLoading">
+                                                                Đang lưu ...
+                                                            </div>
+                                                            <div ng-hide="isLoading">
+                                                                Lưu
+                                                            </div>
+                                        </button>
+                <button type="reset" class="button has-icon refresh">Trở lại mặc định</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+<div class="row">
+    <div class="col-sm-3">
+        <div class="user-info-container main-theme">
+            <div class="avatar text-center">
+                <img src="/assets/images/user.png" alt="" class="img-circle img-responsive">
+                <span class="title">{{mainInfo.Name}}</span>
+            </div>
+            <div class="user-content">
+                <ul class="list-group">
+                    <li class="list-group-item" title="Mã nhân viên">
+                        <i class="fa fa-id-card" aria-hidden="true"></i> {{mainInfo.EmplID}}
+                    </li>
+                    <li class="list-group-item" title="Email">
+                        <i class="fa fa-envelope" aria-hidden="true"></i> {{mainInfo.Mail}}
+                    </li>
+                </ul>
+                <div class="text-center menu">
+                    <hr>
+                    <button type="button" ng-click="switchMode('info')">thông tin chức vụ</button>
+                    <button type="button" ng-show="isCurrentEmployee()" ng-click="switchMode('password')">đổi mật khẩu</button>
+                    <button type="button" ng-click="switchMode('customer')">quản lý khách hàng</button>
+                    <button type="button" ng-click="switchMode('consulting')">tư vấn</button>
+                    <button type="button" ng-click="switchMode('consulted')">được tư vấn</button>
+                    <button type="button" ng-click="switchMode('study')">nghiên cứu</button>
+                    <button type="button" ng-click="switchMode('instruct')">hướng dẫn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9" style="padding-left: 50px; padding-right: 50px">
+        <div ng-if="!isCurrentEmployee()" class="text-right">
+            <a ui-sref="employee.list">Xem danh sách nhân viên</a>
+        </div>
+        <div ng-switch="mode">
+            <div ng-switch-when="info">
+                <div class="title title-icon-form" style="margin-bottom: 50px">
+                    thông tin chức vụ
+                </div>
+                <form name="infoForm" ng-submit="updateInformation()" class="form-horizontal custom-form">
+                    <div class="md-dialog-content">
+                        <div class="form-group">
+                            <label>Tên</label>
+                            <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phòng ban</label>
+                            <input type="text" name="childDepartment" class="form-control custom-input" ng-model="info.ChildDepartment" value="{{mainInfo.ChildDepartment}}"
+                                ng-disable="isLoading" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Chức vụ</label>
+                            <input type="text" name="officerCode" class="form-control custom-input" ng-model="info.OfficerCode" value="{{mainInfo.OfficerCode}}"
+                                ng-disable="isLoading" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Công việc</label>
+                            <input type="text" name="jobTitle" class="form-control custom-input" ng-model="info.JobTitle" value="{{mainInfo.JobTitle}}"
+                                ng-disable="isLoading" required>
+                        </div>
+                    </div>
+                    <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                        <button type="submit" class="button has-icon primary submit">
+                                            <div ng-show="isLoading">
+                                                Đang lưu ...
+                                            </div>
+                                            <div ng-hide="isLoading">
+                                                Lưu
+                                            </div>
+                                        </button>
+                        <button type="reset" class="button has-icon refresh">Trở lại mặc định</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-switch-when="password">
+                <div class="title title-icon-form" style="margin-bottom: 50px">
+                    đổi mật khẩu
+                </div>
+                <form name="changePasswordForm" ng-submit="changePasswordForm.$valid && updatePassword()" class="form-horizontal custom-form">
+
+                    <div class="md-dialog-content">
+                        <div class="form-group">
+                            <label>Mật khẩu mới</label>
+                            <input type="password" name="password" class="form-control custom-input" ng-model="password" ng-disable="isLoading" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Xác nhận mật khẩu</label>
+                            <input type="password" name="confirmedPassword" class="form-control custom-input" ng-model="confirmedPassword" compare-to="password"
+                                ng-disable="isLoading" required>
+                            <ng-messages for="changePasswordForm.confirmedPassword.$error">
+                                <ng-messages-include src="views/components/messages.component.html"></ng-messages-include>
+                            </ng-messages>
+                        </div>
+                    </div>
+                    <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                        <button type="submit" class="button has-icon primary submit">
+                                            <div ng-show="isLoading">
+                                                Đang lưu...
+                                            </div>
+                                            <div ng-hide="isLoading">
+                                                Lưu
+                                            </div>
+                                        </button>
+                        <button type="reset" class="button has-icon refresh">Xóa</button>
+                    </div>
+                </form>
+            </div>
+            <div ng-switch-when="customer">
+                <div class="title title-icon-history">
+                    danh sách khách hàng đang quản lý
+                </div>
+                <form class="form-inline" ng-submit="addCustomer()">
+                    <div class="form-group">
+                        <label for="customer">Chọn khách hàng:</label>
+                        <select class="form-control custom-input" ng-model="customer">
+                            <option ng-repeat="obj in customerList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button has-icon primary add">Thêm</button>
+                </form>
+                <search-box></search-box>
+                <div class="table-responsive">
+                    <customer-table></customer-table>
+                </div>
+            </div>
+            <div ng-switch-when="consulting">
+                <div class="title title-icon-history">
+                    danh sách tư vấn
+                </div>
+                <filter-box></filter-box>
+                <div class="table-responsive">
+                    <consultancy-table></consultancy-table>
+                </div>
+            </div>
+            <div ng-switch-when="consulted">
+                <div class="title title-icon-history">
+                    danh sách được tư vấn
+                </div>
+                <filter-box></filter-box>
+                <div class="table-responsive">
+                    <consultancy-table></consultancy-table>
+                </div>
+            </div>
+            <div ng-switch-when="study">
+                <div class="title title-icon-history">
+                    danh sách nghiên cứu
+                </div>
+                <filter-box></filter-box>
+                <div class="table-responsive">
+                    <study-table></study-table>
+                </div>
+            </div>
+            <div ng-switch-when="instruct">
+                <div class="title title-icon-history">
+                    danh sách hướng dẫn
+                </div>
+                <filter-box></filter-box>
+                <div class="table-responsive">
+                    <study-table></study-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

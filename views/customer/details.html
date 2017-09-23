@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-sm-3 col-xs-12">
+        <div class="user-info-container theme-1">
+            <div class="avatar text-center">
+                <img src="/assets/images/user.png" alt="" class="img-circle img-responsive">
+                <span class="title">{{mainInfo.Name}}</span>
+            </div>
+            <div class="user-content">
+                <ul class="list-group">
+                    <li class="list-group-item" title="Mã khách hàng">
+                        <i class="fa fa-id-card" aria-hidden="true"></i> {{mainInfo.CustomerID}}
+                    </li>
+                </ul>
+                <div class="text-center menu">
+                    <hr>
+                    <button type="button" ng-click="switchMode('info')">thông tin</button>
+                    <button type="button" ng-click="switchMode('employee')">nhân viên quản lý</button>
+                    <button type="button" ng-click="switchMode('consultancy')">tư vấn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9 col-xs-12" ng-switch="mode">
+        <div class="text-right">
+            <a ui-sref="customer.list">Xem danh sách khách hàng</a>
+        </div>
+        <div ng-switch-when="info">
+            <div class="title title-icon-form">
+                thông tin
+            </div>
+            <form ng-submit="update()" class="form-horizontal custom-form">
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" name="Address" class="form-control custom-input" ng-model="info.Address" value="{{mainInfo.Address}}"
+                        ng-disable="isLoading" required>
+                </div>
+                <div class="form-group">
+                    <label>Điện thoại</label>
+                    <input type="text" name="Phone" class="form-control custom-input" ng-model="info.Phone" value="{{mainInfo.Phone}}" ng-disable="isLoading"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label style="display: block">Người đại diện</label>
+                    <!-- <div class="select-icon">
+                        <a ui-sref="employee.details({ EmplID: info.Representative })"><span class="fa fa-2x fa-user"></span></a>
+                    </div> -->
+                    <select class="form-control custom-input" ng-model="info.Representative" style="display: inline-block">
+                        <option ng-repeat="obj in emplList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
+                    </select>
+
+                </div>
+                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                    <button type="submit" class="button has-icon primary submit">
+                                                <div ng-show="isLoading">
+                                                    Đang lưu ...
+                                                </div>
+                                                <div ng-hide="isLoading">
+                                                    Lưu
+                                                </div>
+                            </button>
+                    <button type="reset" class="button has-icon refresh">Trở lại mặc định</button>
+                </div>
+            </form>
+
+        </div>
+        <div ng-switch-when="employee">
+            <div class="title title-icon-list">
+                danh sách nhân viên quản lý
+            </div>
+            <form class="form-inline" ng-submit="addEmployee()">
+                <div class="form-group">
+                    <label for="customer">Chọn nhân viên:</label>
+                    <select class="form-control custom-input" ng-model="employee">
+                        <option ng-repeat="obj in employeeList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
+                    </select>
+                </div>
+                <button type="submit" class="button has-icon primary add">Thêm</button>
+            </form>
+            <search-box></search-box>
+            <employee-table></employee-table>
+        </div>
+        <div ng-switch-when="consultancy">
+            <div class="title title-icon-history">
+                danh sách tư vấn
+            </div>
+            <filter-box></filter-box>
+            <div class="table-responsive">
+                <consultancy-table></consultancy-table>
+            </div>  
+        </div>
+    </div>
+</div>

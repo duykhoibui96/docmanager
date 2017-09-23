@@ -1,0 +1,44 @@
+.user-info-container {
+    margin-bottom: 50px
+}
+
+.user-info-container.theme-1 {
+
+    background:#A4A4A4;
+    color: white;
+}
+
+
+.avatar {
+    padding: 50px;
+}
+
+.user-info-container.main-theme .avatar {
+    background: linear-gradient(to bottom, #2d89b4, #297ca3);
+}
+
+.user-info-container.theme-1 .avatar {
+    background: #848484;
+}
+
+
+.avatar img {
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.avatar span {
+    font-size: 1.5em;
+}
+
+.user-content {
+    padding: 20px 10px;
+}
+
+.user-content .list-group-item {
+    padding-left: 10px;
+}
+
+.user-content i {
+    width: 50px;
+}
