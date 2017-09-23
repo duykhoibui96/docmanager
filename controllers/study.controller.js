@@ -1,5 +1,6 @@
 var Study = require('../models/Study');
 var responseHelper = require('../helpers/response.helper');
+var fs = require('fs');
 
 var getIdObj = function (id) {
 
@@ -16,6 +17,7 @@ module.exports = {
     saveFiles: function (req, res) {
 
         var files = req.files;
+        console.log(files);
         var StudyID = req.params.id;
         for (var i = 0; i < files.length; i++)
             files[i].time = Date.now();
@@ -33,6 +35,29 @@ module.exports = {
             responseHelper.sendTableDetails(res, doc, err);
 
         })
+
+    },
+
+    deleteFile: function(req,res) {
+
+        console.log(req.body);
+        var path = req.body.path;
+        Study.findOneAndUpdate({
+            StudyID: req.params.id
+        }, {
+            $pop: {
+                Document: req.body
+            }
+        }, {
+            new: true
+        }, function (err, doc) {
+
+            if (doc)
+                fs.unlink(path);
+            responseHelper.sendTableDetails(res, doc, err);
+
+        })
+
 
     },
 

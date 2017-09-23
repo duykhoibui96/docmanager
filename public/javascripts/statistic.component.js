@@ -1,17 +1,17 @@
 angular
     .module('statistic', ['ngStorage', 'ngRoute', 'ui.router'])
-    .directive('searchBox', function($rootScope){
+    .directive('searchBox', function ($rootScope) {
 
         return {
 
             restrict: 'EA',
             scope: true,
             templateUrl: 'views/components/search-box.component.html',
-            controller: function($scope) {
+            controller: function ($scope) {
 
                 $scope.selectedCat = $scope.searchCat[0].value;
                 console.log('asdf');
-                $scope.search = function() {
+                $scope.search = function () {
 
                     $rootScope.$emit('reload', {
 
@@ -97,7 +97,7 @@ angular
 
 
     })
-    .directive('customTable', function ($state, $localStorage) {
+    .directive('customTable', function ($state, $localStorage, $http) {
 
         return {
 
@@ -151,20 +151,15 @@ angular
 
                                 return $.Deferred(function ($dfd) {
 
-                                    $.ajax({
-                                        url: listUrl,
-                                        type: 'GET',
-                                        beforeSend: function (request) {
-                                            request.setRequestHeader('token', $localStorage.auth.token);
-                                        },
-                                        success: function (data) {
-                                            console.log(data);
-                                            $dfd.resolve(data);
-                                        },
-                                        error: function () {
-                                            $dfd.reject();
-                                        }
-                                    });
+                                    $http.get(listUrl).then(function (response) {
+
+                                        $dfd.resolve(response.data);
+
+                                    }, function (err) {
+
+                                        $dfd.reject();
+
+                                    })
 
                                 });
 
@@ -176,21 +171,15 @@ angular
 
                                 return $.Deferred(function ($dfd) {
 
-                                    $.ajax({
-                                        url: createUrl,
-                                        type: 'POST',
-                                        data: postData,
-                                        beforeSend: function (request) {
-                                            request.setRequestHeader('token', $localStorage.auth.token);
-                                        },
-                                        success: function (data) {
-                                            console.log(data);
-                                            $dfd.resolve(data);
-                                        },
-                                        error: function () {
-                                            $dfd.reject();
-                                        }
-                                    });
+                                    $http.post(createUrl, postData).then(function (response) {
+
+                                        $dfd.resolve(response.data);
+
+                                    }, function (err) {
+
+                                        $dfd.reject();
+
+                                    })
 
                                 });
 
@@ -204,21 +193,15 @@ angular
 
                                 return $.Deferred(function ($dfd) {
 
-                                    $.ajax({
-                                        url: updateUrl,
-                                        type: 'PUT',
-                                        data: postData,
-                                        beforeSend: function (request) {
-                                            request.setRequestHeader('token', $localStorage.auth.token);
-                                        },
-                                        success: function (data) {
-                                            console.log(data);
-                                            $dfd.resolve(data);
-                                        },
-                                        error: function () {
-                                            $dfd.reject();
-                                        }
-                                    });
+                                    $http.put(updateUrl, postData).then(function (response) {
+
+                                        $dfd.resolve(response.data);
+
+                                    }, function (err) {
+
+                                        $dfd.reject();
+
+                                    })
 
                                 });
 
@@ -229,21 +212,15 @@ angular
                                 var deleteUrl = `${url}/${postData[$scope.keyName]}`;
                                 console.log(deleteUrl);
                                 return $.Deferred(function ($dfd) {
-                                    $.ajax({
-                                        url: deleteUrl,
-                                        type: 'DELETE',
-                                        data: postData,
-                                        dataType: 'json',
-                                        beforeSend: function (request) {
-                                            request.setRequestHeader('token', $localStorage.auth.token);
-                                        },
-                                        success: function (data) {
-                                            $dfd.resolve(data);
-                                        },
-                                        error: function () {
-                                            $dfd.reject();
-                                        }
-                                    });
+                                    $http.delete(updateUrl).then(function (response) {
+
+                                        $dfd.resolve(response.data);
+
+                                    }, function (err) {
+
+                                        $dfd.reject();
+
+                                    })
 
                                 });
 
@@ -260,9 +237,7 @@ angular
                                 dateFormat: 'dd-mm-yy'
                             });
                             if (data.formType === 'create') {
-                                data.form.find('input[name=Time]').datepicker({
-                                    dateFormat: 'dd-mm-yy'
-                                });
+                                data.form.find('input[name=Time]').datepicker('setDate', 'today');
                                 data.form.find(`input[name=${$scope.keyName}]`).attr('readonly', true);
                                 data.form.find(`input[name=${$scope.keyName}]`).val(Date.now());
                             }
@@ -276,6 +251,7 @@ angular
 
                     $rootScope.$on('reload', function (event, data) {
 
+                        console.log('reload-trigger');
                         $(selector).jtable('load', data);
 
                     })

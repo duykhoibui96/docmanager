@@ -34,6 +34,7 @@ router.route('/files/:id')
         })
 
     })
+    .put(controller.deleteFile);
 
 router.route('/')
     .get(controller.list)
