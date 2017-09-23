@@ -145,7 +145,7 @@ angular
 
 
     })
-    .controller('customerDetailsCtrl', function ($scope, info, employees, $http, $rootScope) {
+    .controller('customerDetailsCtrl', function ($scope, info, employees, $http, dialog) {
 
         $scope.emplList = employees.Options;
         $scope.mainInfo = info;
@@ -174,9 +174,9 @@ angular
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else {
-                    $rootScope.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 
@@ -225,7 +225,7 @@ angular
                                 var res = response.data;
                                 console.log(res);
                                 if (res.Result === 'ERROR') {
-                                    $rootScope.showAlert('error', res.Message);
+                                    dialog.showAlert('error', res.Message);
                                     $dfd.reject(res);
 
                                 } else {
@@ -298,7 +298,7 @@ angular
                 var res = response.data;
                 console.log(res);
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else {
 
                     $scope.mainInfo = res.Record;

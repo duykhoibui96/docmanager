@@ -135,7 +135,7 @@ angular
 
 
     })
-    .controller('seminarDetailsCtrl', function ($scope, info, employees, $http, $rootScope) {
+    .controller('seminarDetailsCtrl', function ($scope, info, employees, $http, dialog) {
 
         $scope.mainInfo = info;
         $scope.mode = 'info';
@@ -160,9 +160,9 @@ angular
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else {
-                    $rootScope.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 

@@ -8,7 +8,9 @@ angular
         'consultancy',//for consultancy list and details
         'study',//for study list and details
         'seminar',//for seminar list and details
-        'uploader'
+        'uploader',//for file upload
+        'dialog',
+        'helper'
     ])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
@@ -36,27 +38,9 @@ angular
             .otherwise('/employee');
 
     })
-    .run(function ($transitions, $rootScope, $localStorage, $window, $state) {
+    .run(function ($transitions, $rootScope, $localStorage, $window, $state, loading, auth) {
 
-        $rootScope.showAlert = function (type, msg) {
-
-
-
-        }
-
-
-        $rootScope.startLoading = function () {
-
-
-
-        }
-
-        $rootScope.stopLoading = function () {
-
-
-
-
-        }
+        $rootScope.auth = auth;
 
         $rootScope.logout = function () {
 
@@ -66,25 +50,13 @@ angular
 
         }
 
-        $rootScope.isAuthenticated = function () {
-            return $localStorage.auth;
-        }
-
-        $rootScope.getUsername = function () {
-
-            if ($localStorage.auth)
-                return $localStorage.auth.username;
-            return null;
-
-        }
-
         $transitions.onStart({}, function (trans) {
 
             console.log('On start');
             if (trans._targetState._identifier === '500')
                 return true;
 
-            $rootScope.startLoading();
+            loading.start();
             var substate = trans.to().defaultSubstate;
             if (substate)
                 return trans.router.stateService.target(substate);
@@ -126,7 +98,7 @@ angular
 
             console.log('On success');
             $window.scrollTo(0, 0);
-            $rootScope.stopLoading();
+            loading.stop();
             return true;
 
         })
@@ -149,7 +121,7 @@ angular
             } else if (!trans._error.redirected) {
 
                 console.log(trans);
-                $rootScope.stopLoading();
+                loading.start();
 
             }
 
@@ -157,22 +129,4 @@ angular
 
         })
 
-    })
-    .directive('compareTo', function () {
-        return {
-            require: "ngModel",
-            scope: {
-                otherModelValue: "=compareTo"
-            },
-            link: function (scope, element, attributes, ngModel) {
-
-                ngModel.$validators.compareTo = function (modelValue) {
-                    return modelValue == scope.otherModelValue;
-                };
-
-                scope.$watch("otherModelValue", function () {
-                    ngModel.$validate();
-                });
-            }
-        };
     });

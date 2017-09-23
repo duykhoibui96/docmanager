@@ -177,7 +177,7 @@ angular
 
 
     })
-    .controller('employeeDetailsCtrl', function ($scope, info, $http, $rootScope, $state) {
+    .controller('employeeDetailsCtrl', function ($scope, info, $http, dialog, $state, $rootScope) {
 
         $scope.mainInfo = info;
         $scope.mode = 'info';
@@ -281,9 +281,9 @@ angular
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else {
-                    $rootScope.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 
@@ -344,7 +344,7 @@ angular
                 var res = response.data;
                 console.log(res);
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else
                     $rootScope.$emit('reload');
 
@@ -367,7 +367,7 @@ angular
                     var res = response.data;
                     console.log(res);
                     if (res.Result === 'ERROR') {
-                        $rootScope.showAlert('error', res.Message);
+                        dialog.showAlert('error', res.Message);
                         $dfd.reject(res);
 
                     } else

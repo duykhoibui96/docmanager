@@ -151,7 +151,7 @@ angular
 
 
     })
-    .controller('consultancyDetailsCtrl', function ($scope, info, employees, customers, $http, $rootScope) {
+    .controller('consultancyDetailsCtrl', function ($scope, info, employees, customers, $http, dialog) {
 
         $scope.uploadUrl = '/api/consultancies/files/' + info.ConsID;
         $scope.empList = employees.Options;
@@ -180,9 +180,9 @@ angular
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    $rootScope.showAlert('error', res.Message);
+                    dialog.showAlert('error', res.Message);
                 else {
-                    $rootScope.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 

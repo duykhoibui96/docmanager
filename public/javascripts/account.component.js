@@ -13,7 +13,7 @@ angular
             })
 
     })
-    .controller('accountCtrl', function ($scope, $state, $localStorage,$http,$rootScope) {
+    .controller('accountCtrl', function ($scope, $state, $localStorage,$http,dialog) {
 
         $scope.signin = function () {
 
@@ -47,7 +47,7 @@ angular
                 switch(err.status)
                 {
                     case 406:
-                        $rootScope.showAlert('error',err.data);
+                        dialog.showAlert('error',err.data);
                 }
 
 
