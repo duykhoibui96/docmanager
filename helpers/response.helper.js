@@ -118,6 +118,12 @@ module.exports = {
 
             })
 
+            docs.filter(function(item) {
+
+                return true;
+
+            })
+
             res.status(200).send({
 
                 Result: 'OK',

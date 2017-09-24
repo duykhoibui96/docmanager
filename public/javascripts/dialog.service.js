@@ -10,7 +10,7 @@ angular
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: '/views/components/dialog.component.html',
+                templateUrl: '/views/components/notify-dialog.component.html',
                 controller: function ($scope, $uibModalInstance) {
 
                     $scope.title = angular.uppercase(type === 'error' ? 'lỗi' : 'thông báo');

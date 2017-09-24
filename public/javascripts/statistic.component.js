@@ -95,6 +95,8 @@ angular
                         dateFormat: 'dd-mm-yy'
                     });
 
+                    $('.end-date').datepicker('setDate','today');
+
                     $scope.$watch('recentDays', function (newValue, oldValue) {
 
                         console.log(newValue === '0');
@@ -135,16 +137,18 @@ angular
                         paging: true,
                         jqueryuiTheme: true,
                         recordsLoaded: function (event, data) {
+                            
                             $(selector + ' .jtable-data-row').click(function () {
                                 var row_id = $(this).attr('data-record-key');
                                 console.log(row_id);
                                 console.log($scope.recordState);
                                 $state.transitionTo($scope.recordState, {
-
+        
                                     id: row_id
-
+        
                                 })
                             });
+
                         },
                         recordAdded: function (event, data) {
                             if (data.record) {
@@ -201,10 +205,11 @@ angular
                             createAction: $scope.createForbidden ? undefined : $scope.createAction ? $scope.createAction : function (postData, params) {
 
                                 var createUrl = `${url}`;
+                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 
                                 return $.Deferred(function ($dfd) {
 
-                                    $http.post(createUrl, postData).then(function (response) {
+                                    $http.post(createUrl, data).then(function (response) {
 
                                         $dfd.resolve(response.data);
 
@@ -245,7 +250,7 @@ angular
                                 var deleteUrl = `${url}/${postData[$scope.keyName]}`;
                                 console.log(deleteUrl);
                                 return $.Deferred(function ($dfd) {
-                                    $http.delete(updateUrl).then(function (response) {
+                                    $http.delete(deleteUrl).then(function (response) {
 
                                         $dfd.resolve(response.data);
 
@@ -270,8 +275,8 @@ angular
                                 dateFormat: 'dd-mm-yy'
                             });
                             if (data.formType === 'create') {
-                                data.form.find('input[name=Time]').datepicker('setDate', 'today');
                                 data.form.find(`input[name=${$scope.keyName}]`).attr('readonly', true);
+                                data.form.find('input[name=Time]').datepicker('setDate', 'today');
                                 data.form.find(`input[name=${$scope.keyName}]`).val(Date.now());
                             }
 
@@ -279,6 +284,8 @@ angular
 
 
                     })
+
+                    
 
                     $(selector).jtable('load');
 
