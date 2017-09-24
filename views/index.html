@@ -12,9 +12,15 @@
     <link rel="stylesheet" href="/lib/jqueryui/themes/flick/jquery-ui.min.css">
     <link rel="stylesheet" href="/lib/jtable/lib/themes/jqueryui/jtable_jqueryui.min.css">
     <link href="/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/assets/stylesheets/responsive.css">
     <link rel="stylesheet" href="/assets/stylesheets/style.css">
     <link rel="stylesheet" href="/assets/stylesheets/login.css">
     <link rel="stylesheet" href="/assets/stylesheets/info.css">
+    <link rel="stylesheet" href="/assets/stylesheets/dialog.css">
+
+
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/jqueryui/jquery-ui.min.js"></script>
@@ -60,10 +66,10 @@
                 <div class="col-sm-2 col-sm-offset-4 col-xs-12" style="padding-top: 10px" ng-if="auth.isAuthenticated()">
                     <a ui-sref="info"><img src="/assets/images/user.png" alt="" style="width: 40px; border-radius: 25px"></a>
                     <button class="btn btn-default dropdown-toggle icon" style="border: none; background: none; font-weight: bold" type="button"
-                        id="menu1" data-toggle="dropdown">{{getUsername()}}</button>
+                        id="menu1" data-toggle="dropdown">{{auth.getUsername()}}</button>
                     <ul class="dropdown-menu list-group account-menu" role="menu" aria-labelledby="menu1">
                         <li class="list-group-item main-select" role="presentation"><a role="menuitem" tabindex="-1" ui-sref="info" ui-sref-opts="{reload:true}">Thông tin cá nhân</a></li>
-                        <li class="list-group-item main-select" role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" ng-click="logout()">Đăng xuất</a></li>
+                        <li class="list-group-item main-select" role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;" ng-click="auth.logout()">Đăng xuất</a></li>
                     </ul>
                 </div>
             </div>

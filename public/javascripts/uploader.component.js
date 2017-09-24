@@ -15,7 +15,7 @@ angular
                         uploadUrl: $scope.uploadUrl, // you must set a valid URL here else you will get an error
                         // allowedFileExtensions: ['jpg', 'png', 'gif'],
                         overwriteInitial: false,
-                        maxFileSize: 1000,
+                        maxFileSize: 10000,
                         maxFilesNum: 10,
                         //allowedFileTypes: ['image', 'video', 'flash'],
                         slugCallback: function (filename) {
@@ -57,11 +57,18 @@ angular
 
                 var formatSize = function (size) {
 
-                    return size;
+                    var unit = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
+                    for (var i = 0; i < 4; i++)
+                        if (size < 1024)
+                            return `${size} ${unit[i]}`;
+                        else
+                            size = Math.round(size / 1024);
+
+                    return `${size} TB`;
                 }
 
-                $scope.id = 'file-table';
+                $scope.id = 'document-table';
                 $scope.title = 'Danh sách tập tin';
                 console.log($scope.url);
                 $scope.fields = {
@@ -70,6 +77,7 @@ angular
 
                         title: 'Tên tập tin'
 
+
                     },
 
                     size: {
@@ -77,7 +85,7 @@ angular
                         title: 'Kích cỡ',
                         display: function (data) {
 
-                            return formatSize(data.Record.size);
+                            return formatSize(data.record.size);
 
                         }
 
@@ -99,6 +107,18 @@ angular
                         key: true,
                         list: false
 
+                    },
+
+                    download: {
+
+                        width: '1%',
+                        display: function (data) {
+
+                            console.log(data);
+                            return `<a href="${data.record.path}" download><i class="fa fa-download" aria-hidden="true"></i></a>`;
+
+                        }
+
                     }
 
                 }
@@ -111,17 +131,32 @@ angular
                     var startIndex = params.jtStartIndex;
                     var pageSize = params.jtPageSize;
 
-                    console.log(postData);
-                    if (postData)
-                        $scope.document = postData;
+                    var docs = Object.assign([], $scope.document);
+
+                    if (postData) {
+                        if (postData.startDate) {
+                            var start = new Date(Number(postData.startDate));
+                            var end = new Date(Number(postData.endDate));
+
+                            docs = docs.filter(function (item) {
+
+                                var current = new Date(item.time);
+                                return start <= current && current <= end;
+
+                            })
+                        }
+                        else
+                            docs = postData;
+
+                    }
 
                     return $.Deferred(function ($dfd) {
 
                         $dfd.resolve({
 
                             Result: 'OK',
-                            TotalRecordCount: $scope.document.length,
-                            Records: $scope.document.slice(startIndex, startIndex + pageSize)
+                            TotalRecordCount: docs.length,
+                            Records: docs.slice(startIndex, startIndex + pageSize)
 
                         })
 

@@ -206,6 +206,7 @@ angular
 
         ];
 
+        $scope.for='employee';
         $scope.switchMode = function (mode) {
 
             switch (mode) {

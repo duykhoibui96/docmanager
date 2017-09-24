@@ -175,6 +175,8 @@ angular
 
         ];
 
+        $scope.for = 'employee';
+
 
     })
     .controller('employeeDetailsCtrl', function ($scope, info, $http, dialog, $state, $rootScope) {
@@ -204,6 +206,7 @@ angular
 
             switch (mode) {
                 case 'customer':
+                    $scope.for = 'customer';
                     $scope.loadCustomers();
                     $scope.searchCat = [
 
@@ -307,6 +310,7 @@ angular
             }).then(function (response) {
 
                 $scope.isLoading = false;
+                dialog.showAlert('success', 'Cập nhật mật khẩu thành công');
                 console.log(response.data);
 
 

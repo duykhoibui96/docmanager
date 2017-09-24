@@ -27,7 +27,7 @@ angular
                 'responseError': function (response) {
 
                     if (response.status > 500)
-                        $rootScope.showAlert('error', 'Connection failed');
+                        $rootScope.showAlert('error', 'Mất kết nối đến server');
                     return $q.reject(response);
                 }
             };
@@ -41,14 +41,6 @@ angular
     .run(function ($transitions, $rootScope, $localStorage, $window, $state, loading, auth) {
 
         $rootScope.auth = auth;
-
-        $rootScope.logout = function () {
-
-            if ($localStorage.auth)
-                delete $localStorage.auth;
-            $state.transitionTo('login');
-
-        }
 
         $transitions.onStart({}, function (trans) {
 

@@ -23,19 +23,41 @@ module.exports = {
         Consultancy.findOneAndUpdate({
             ConsID: ConsID
         }, {
-            $pushAll: {
-                Document: req.files
-            }
-        }, {
-            new: true
-        }, function (err, doc) {
+                $pushAll: {
+                    Document: req.files
+                }
+            }, {
+                new: true
+            }, function (err, doc) {
 
-            responseHelper.sendTableDetails(res, doc, err);
+                responseHelper.sendTableDetails(res, doc, err);
 
-        })
+            })
 
     },
 
+    deleteFile: function (req, res) {
+
+        console.log(req.body);
+        var path = req.body.path;
+        Consultancy.findOneAndUpdate({
+            ConsID: req.params.id
+        }, {
+                $pop: {
+                    Document: req.body
+                }
+            }, {
+                new: true
+            }, function (err, doc) {
+
+                if (doc)
+                    fs.unlink(path);
+                responseHelper.sendTableDetails(res, doc, err);
+
+            })
+
+
+    },
 
     get: function (req, res) {
 

@@ -71,7 +71,7 @@ module.exports = {
                 res.status(200).send({
 
                     Result: 'ERROR',
-                    Message: 'Record not found'
+                    Message: 'Không tìm thấy dữ liệu hiện tại'
 
                 })
             else

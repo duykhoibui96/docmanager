@@ -1,0 +1,39 @@
+/*Responsive component*/
+
+
+/* Small */
+
+@media(max-width:450px) {
+    .navbar-brand,
+    .navbar-toggle {
+        font-size: 1.5em;
+    }
+    body {
+        font-size: 1.3em;
+        font-family: 'Karla', sans-serif !important;
+        position: relative;
+        background: white;
+    }
+    .space-between-brand {
+        padding-left: 20px !important;
+    }
+}
+
+
+/* Medium */
+
+@media(min-width:451px) {
+    body {
+        font-size: 1.5em;
+        font-family: 'Karla', sans-serif !important;
+        position: relative;
+        background: white;
+    }
+    .navbar-brand,
+    .navbar-toggle {
+        font-size: 1.5em;
+    }
+    .space-between-brand {
+        padding-left: 100px !important;
+    }
+}

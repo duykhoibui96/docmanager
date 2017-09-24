@@ -1,0 +1,16 @@
+14 Colors
+Background,White,255,255,255
+Needle 1,Pale Yellow,253,245,181
+Needle 2,Blond,245,219,139
+Needle 3,Umber,181,148,116
+Needle 4,Beige,215,189,164
+Needle 5,Black,0,0,0
+Needle 6,Pale Sky,160,184,204
+Needle 7,Bright Blue,112,169,226
+Needle 8,Pale Aqua,152,214,189
+Needle 9,Pale Yellow,253,245,181
+Needle 10,Pale Aqua,152,214,189
+Needle 11,Pale Sky,160,184,204
+Needle 12,Pale Pink,249,153,183
+Needle 13,Pale Yellow,253,245,181
+Needle 14,Pale Sky,160,184,204

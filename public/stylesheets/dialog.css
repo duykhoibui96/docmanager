@@ -1,0 +1,17 @@
+.modal-header {
+
+    color: white;
+    background-clip: padding-box;
+
+}
+.modal-header.success {
+
+    background: green;
+
+}
+
+.modal-header.error {
+    
+    background: orange;
+    
+}

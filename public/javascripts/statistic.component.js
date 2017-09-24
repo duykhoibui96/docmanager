@@ -9,14 +9,21 @@ angular
             templateUrl: 'views/components/search-box.component.html',
             controller: function ($scope) {
 
+                var id = $scope.for + '-table';
                 $scope.selectedCat = $scope.searchCat[0].value;
                 console.log('asdf');
                 $scope.search = function () {
 
                     $rootScope.$emit('reload', {
 
-                        searchText: this.searchText,
-                        cat: this.selectedCat
+                        id: id,
+
+                        data: {
+
+                            searchText: this.searchText,
+                            cat: this.selectedCat
+
+                        }         
 
                     })
 
@@ -33,9 +40,15 @@ angular
         return {
 
             restrict: 'EA',
-            scope: true,
+            scope: {
+                   
+                for: '@'
+
+            },
             templateUrl: 'views/components/filter-box.component.html',
             controller: function ($scope) {
+
+                var id = $scope.for + '-table';
 
                 $scope.filterId = Date.now() + 'filter';
                 $scope.mode = 'optional';
@@ -65,9 +78,14 @@ angular
 
                     $rootScope.$emit('reload', {
 
-                        startDate: startDate,
-                        endDate: endDate
+                        id: id,
+                        data: {
 
+                            startDate: startDate,
+                            endDate: endDate
+
+                        }
+                        
                     });
 
                 };
@@ -127,6 +145,21 @@ angular
 
                                 })
                             });
+                        },
+                        recordAdded: function (event, data) {
+                            if (data.record) {
+                                $(selector).jtable('load');
+                            }
+                        },
+                        recordUpdated: function (event, data) {
+                            if (data.record) {
+                                $(selector).jtable('load');
+                            }
+                        },
+                        recordDeleted: function (event, data) {
+                            if (data.record) {
+                                $(selector).jtable('load');
+                            }
                         },
                         actions: {
 
@@ -249,10 +282,11 @@ angular
 
                     $(selector).jtable('load');
 
-                    $rootScope.$on('reload', function (event, data) {
+                    $rootScope.$on('reload', function (event, block) {
 
-                        console.log('reload-trigger');
-                        $(selector).jtable('load', data);
+                        console.log(block);
+                        if (block.id === $scope.id)
+                            $(selector).jtable('load', block.data);
 
                     })
 

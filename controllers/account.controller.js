@@ -13,7 +13,7 @@ module.exports = {
                 res.status(500).send(err);
             } else {
                 if (doc == null)
-                    res.status(406).send('Invalid username or password');
+                    res.status(406).send('Tài khoản hoặc mật khẩu bị sai');
                 else
                     res.send(doc);
             }
@@ -39,7 +39,7 @@ module.exports = {
             }
             else {
                 if (doc == null)
-                    res.status(404).send('User not found!');
+                    res.status(404).send('Người dùng không tồn tại');
                 else
                     res.send(doc);
             }

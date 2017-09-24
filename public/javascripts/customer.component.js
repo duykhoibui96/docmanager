@@ -143,6 +143,8 @@ angular
 
         ];
 
+        $scope.for = 'customer';
+
 
     })
     .controller('customerDetailsCtrl', function ($scope, info, employees, $http, dialog) {
@@ -197,6 +199,7 @@ angular
                 case 'employee':
 
                     $scope.loadEmployees();
+                    $scope.for = 'employee';
                     $scope.searchCat = [
 
                         {

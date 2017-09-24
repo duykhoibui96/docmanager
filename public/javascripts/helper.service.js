@@ -21,7 +21,7 @@ angular
 
 
     })
-    .service('auth', function ($localStorage) {
+    .service('auth', function ($localStorage, $state) {
 
         this.isAuthenticated = function () {
 
@@ -34,6 +34,14 @@ angular
             if ($localStorage.auth)
                 return $localStorage.auth.username;
             return null;
+
+        }
+
+        this.logout = function () {
+
+            if ($localStorage.auth)
+                delete $localStorage.auth;
+            $state.transitionTo('login');
 
         }
 
