@@ -6,6 +6,7 @@ var router = express.Router();
 router.route('/')
     .get(controller.list)
     .post(controller.create)
+    .put(controller.updateMany)
 
 router.route('/:id')
     .get(controller.get)

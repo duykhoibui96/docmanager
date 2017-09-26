@@ -42,13 +42,38 @@ module.exports = {
 
             filterObj = {
 
-                ResponsibleEmpl: { $in: [req.query.EmplID] }
+                ResponsibleEmpl: {
+                    $in: [req.query.EmplID]
+                }
+
+            }
+
+        } else if (req.query.list) {
+
+            var list = req.query.list === 'empty' ? [] : req.query.list.split(',').map(item => Number(item));
+            console.log(list); 
+            filterObj = {
+
+                CustomerID: {
+                    $in: list
+                }
+
+            }
+
+        } else if (req.query.exceptedList) {
+
+            var list = req.query.exceptedList === 'empty' ? [] : req.query.exceptedList.split(',').map(item => Number(item)); 
+            filterObj = {
+
+                CustomerID: {
+                    $nin: list
+                }
 
             }
 
         }
 
-        Customer.find(filterObj,function (err, docs) {
+        Customer.find(filterObj, function (err, docs) {
 
             responseHelper.sendTableList(req, res, docs, err);
 
@@ -78,6 +103,30 @@ module.exports = {
             responseHelper.sendTableDetails(res, doc, err);
 
         })
+
+    },
+
+    updateMany: function (req, res) {
+
+        var customerList = req.body.customerList;
+        var id = req.body.EmplID;
+
+        Customer.update({
+
+            CustomerID: {
+                $in: customerList
+            }
+
+        }, {
+            $push: {
+                ResponsibleEmpl: id
+            }
+        }, function (err) {
+
+            responseHelper.sendResponse(err, 'OK');
+
+        })
+
 
     },
 

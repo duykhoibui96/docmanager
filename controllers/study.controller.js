@@ -38,7 +38,7 @@ module.exports = {
 
     },
 
-    deleteFile: function(req,res) {
+    deleteFile: function (req, res) {
 
         console.log(req.body);
         var path = req.body.path;
@@ -53,7 +53,11 @@ module.exports = {
         }, function (err, doc) {
 
             if (doc)
-                fs.unlink(path);
+                fs.unlink(path, function (err) {
+
+                    console.log(err);
+
+                });
             responseHelper.sendTableDetails(res, doc, err);
 
         })

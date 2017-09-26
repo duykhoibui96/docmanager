@@ -127,7 +127,72 @@ angular
         }
 
     })
-    .controller('customerListCtrl', function ($scope) {
+    .controller('customerListCtrl', function ($scope, $rootScope, $http) {
+
+        $scope.selectedOption = 'all';
+        var notReloading = false;
+
+        $rootScope.$on('refresh', function(){
+
+            notReloading = true;
+            $scope.selectedOption = 'all';
+
+        })
+
+        $scope.$watch('selectedOption', function (newValue, oldValue) {
+
+            if (notReloading)
+            {
+                console.log('Got here');
+                notReloading = false;
+                return;
+            }
+
+            if (newValue === oldValue)
+                return;
+
+            switch (newValue) {
+
+                case 'consulted':
+                case 'not-consulted':
+                    $http.get(`/api/consultancies?onlyCustomer=true`).then(function (response) {
+
+                        var records = response.data.map(function(item){
+
+                            return item.CustomerID;
+
+                        });
+
+                        if (records.length === 0)
+                            records = 'empty';
+                        var obj = newValue === 'consulted' ? {
+
+                            list: records
+
+                        } : {
+
+                            exceptedList: records
+
+                        }
+
+                        $rootScope.$emit('reload', {
+
+                            id: 'customer-table',
+                            data: obj
+
+                        })
+
+                    })
+                    break;
+                default:
+                    $rootScope.$emit('reload', {
+                        id: 'customer-table'
+                    })
+
+            }
+
+
+        });
 
         $scope.searchCat = [
 
@@ -147,7 +212,7 @@ angular
 
 
     })
-    .controller('customerDetailsCtrl', function ($scope, info, employees, $http, dialog) {
+    .controller('customerDetailsCtrl', function ($scope, info, employees, $http, dialog, $rootScope) {
 
         $scope.emplList = employees.Options;
         $scope.mainInfo = info;
@@ -216,6 +281,7 @@ angular
                     $scope.deleteForbidden = false;
                     $scope.deleteAction = function (postData) {
 
+                        console.log(postData.EmplID);
                         return $.Deferred(function ($dfd) {
                             $http.put('/api/customers/' + $scope.mainInfo.CustomerID, {
 
@@ -229,7 +295,7 @@ angular
                                 console.log(res);
                                 if (res.Result === 'ERROR') {
                                     dialog.showAlert('error', res.Message);
-                                    $dfd.reject(res);
+                                    $dfd.reject();
 
                                 } else {
 
@@ -239,6 +305,7 @@ angular
                                         EmplList: res.Record.ResponsibleEmpl.length > 0 ? res.Record.ResponsibleEmpl : 'empty'
 
                                     }
+                                    console.log(res.Record);
                                     $dfd.resolve(res);
 
                                 }
@@ -287,13 +354,25 @@ angular
 
         }
 
+        $scope.showAddDialog = function () {
 
-        $scope.addEmployee = function () {
+            dialog.showAddDialog('/api/employees/options?selected=EmplID%20Name', $scope.addEmployees, $scope.mainInfo.ResponsibleEmpl, 'NHÂN VIÊN PHỤ TRÁCH');
+
+        }
+
+
+        $scope.addEmployees = function (records) {
+
+            var array = records.map(function (item) {
+
+                return item.Value;
+
+            });
 
             $http.put('/api/customers/' + $scope.mainInfo.CustomerID, {
 
-                $push: {
-                    ResponsibleEmpl: this.employee
+                $pushAll: {
+                    ResponsibleEmpl: array
                 }
 
             }).then(function (response) {
@@ -311,7 +390,9 @@ angular
 
 
                     }
-                    $rootScope.$emit('reload');
+                    $rootScope.$emit('reload', {
+                        id: 'employee-table'
+                    });
 
                 }
 

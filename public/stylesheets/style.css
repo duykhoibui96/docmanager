@@ -217,6 +217,12 @@
     cursor: pointer;
 }
 
+.icon.animate:hover {
+
+    font-weight: bold;
+
+}
+
 .affix {
     position: fixed;
     z-index: 1000;
@@ -235,6 +241,13 @@ jtable .jtable-title-text {
 
 jtable select {
     color: black;
+}
+
+.jtable-data-row.selected {
+
+    background: gray;
+    color: white;
+
 }
 
 .ui-dialog {
@@ -343,6 +356,11 @@ jtable select {
 .button,
 .ui-dialog button:not(.ui-dialog-titlebar-close) {
     min-width: 15em;
+}
+
+.button:hover,
+.ui-dialog button:not(.ui-dialog-titlebar-close):hover {
+    background: #5E5757;
 }
 
 .has-icon::before,
@@ -544,7 +562,7 @@ filter-box span {
     padding: 50px;
 }
 
-.list-group-item {
+.account-menu .list-group-item {
     border: none;
     background: inherit;
 }

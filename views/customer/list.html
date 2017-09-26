@@ -1,4 +1,15 @@
 <search-box for="customer"></search-box>
+<div class="text-left" style="margin-bottom: 10px">
+    <form class="form-inline">
+        <div class="form-group">
+            <select ng-model="selectedOption" class="form-control">
+                        <option value="all">Tất cả</option>
+                        <option value="consulted">Được tư vấn</option>
+                        <option value="not-consulted">Chưa được tư vấn</option>
+                    </select>
+        </div>
+    </form>
+</div>
 <div class="table-responsive">
     <customer-table></customer-table>
 </div>

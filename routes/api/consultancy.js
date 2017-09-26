@@ -19,7 +19,7 @@ var storage = multer.diskStorage({
 
 var upload = multer({
     storage: storage
-}).any();
+}).array('uplfiles');
 
 router.route('/files/:id')
     .post(function (req, res) {

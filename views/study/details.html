@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row">
         <ul class="nav nav-pills" style="margin-bottom: 50px">
-            <li class="main-select" ng-class="{ active: mode == 'info'}" ng-click="switchMode('mode')"><a href="javascript:;">Thông tin</a></li>
+            <li class="main-select" ng-class="{ active: mode == 'info'}" ng-click="switchMode('info')"><a href="javascript:;">Thông tin</a></li>
             <li class="main-select" ng-class="{ active: mode == 'study-empl'}" ng-click="switchMode('study-empl')"><a href="javascript:;">Nhân viên nghiên cứu</a></li>
             <li class="main-select" ng-class="{ active: mode == 'instruct-empl'}" ng-click="switchMode('instruct-empl')"><a href="javascript:;">Nhân viên hướng dẫn</a></li>
         </ul>
@@ -56,31 +56,19 @@
                 </div>
             </form>
             <div class="table-responsive" ng-switch-when="study-empl">
-                <form class="form-inline" ng-submit="addEmployee('StudyEmpl')">
-                    <div class="form-group">
-                        <label for="customer">Chọn nhân viên:</label>
-                        <select class="form-control custom-input" ng-model="employee">
-                                    <option ng-repeat="obj in employeeList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
-                                </select>
-                    </div>
-                    <button type="submit" class="button has-icon primary add">Thêm</button>
-                </form>
                 <search-box for="employee"></search-box>
+                <div class="text-right">
+                    <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nhân viên</button>
+                </div>
                 <div class="table-responsive">
                     <employee-table></employee-table>
                 </div>
             </div>
             <div class="table-responsive" ng-switch-when="instruct-empl">
-                <form class="form-inline" ng-submit="addEmployee('Instructor')">
-                    <div class="form-group">
-                        <label for="customer">Chọn nhân viên:</label>
-                        <select class="form-control custom-input" ng-model="employee">
-                                    <option ng-repeat="obj in employeeList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
-                                </select>
-                    </div>
-                    <button type="submit" class="button has-icon primary add">Thêm</button>
-                </form>
                 <search-box for="employee"></search-box>
+                <div class="text-right">
+                    <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nhân viên</button>
+                </div>
                 <div class="table-responsive">
                     <employee-table></employee-table>
                 </div>
@@ -88,7 +76,7 @@
         </div>
     </div>
     <div class="title title-icon-list" style="margin-top: 50px">
-        tài liệu hiện có
+        tài liệu liên quan
     </div>
     <filter-box for="document"></filter-box>
     <file-manager document="mainInfo.Document" url="uploadUrl"></file-manager>

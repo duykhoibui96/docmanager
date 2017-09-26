@@ -79,20 +79,21 @@ angular
                         title: 'Mã NC',
                         edit: false,
                         create: true,
-                        list: $scope.hideColumn ? !$scope.hideColumn.includes('StudyID') : true
+                        list: $scope.hideColumn ? !$scope.hideColumn.includes('StudyID') : true,
+                        width: '10%'
 
                     },
 
                     Name: {
 
-                        title: 'Tên nghiên cứu',
+                        title: 'Tên',
                         list: $scope.hideColumn ? !$scope.hideColumn.includes('Name') : true
 
                     },
 
                     Content: {
 
-                        title: 'Nội dung nghiên cứu',
+                        title: 'Nội dung',
                         list: $scope.hideColumn ? !$scope.hideColumn.includes('Content') : true
 
                     },
@@ -206,13 +207,14 @@ angular
 
         ];
 
-        $scope.for='employee';
+        $scope.for = 'employee';
         $scope.switchMode = function (mode) {
 
             switch (mode) {
 
                 case 'study-empl':
 
+                    $scope.emplType = 'StudyEmpl';
                     $scope.loadEmployees();
                     $scope.filterList = {
 
@@ -261,6 +263,7 @@ angular
                 case 'instruct-empl':
 
                     $scope.loadEmployees();
+                    $scope.emplType = 'Instructor';
                     $scope.deleteAction = function (postData) {
 
                         return $.Deferred(function ($dfd) {
@@ -320,14 +323,28 @@ angular
 
         }
 
+        $scope.showAddDialog = function () {
 
-        $scope.addEmployee = function (emplType) {
+            var exceptedList = $scope.mainInfo[$scope.emplType];
+            var title = $scope.emplType === 'StudyEmpl' ? 'NHÂN VIÊN NGHIÊN CỨU' : 'NHÂN VIÊN HƯỚNG DẪN'; 
+            dialog.showAddDialog('/api/employees/options?selected=EmplID%20Name', $scope.addEmployees, exceptedList, title);
 
+        }
+
+
+        $scope.addEmployees = function (records) {
+
+            var array = records.map(function (item) {
+
+                return item.Value;
+
+            });
+            var emplType = $scope.emplType;
             var obj = {};
-            obj[emplType] = this.employee;
+            obj[emplType] = array;
             $http.put('/api/studies/' + $scope.mainInfo.StudyID, {
 
-                $push: obj
+                $pushAll: obj
 
             }).then(function (response) {
 
@@ -344,7 +361,9 @@ angular
 
 
                     }
-                    $rootScope.$emit('reload');
+                    $rootScope.$emit('reload', {
+                        id: 'employee-table'
+                    });
 
                 }
 

@@ -1,7 +1,7 @@
 angular
     .module('app', ['ngRoute',
         'ngStorage',
-        'statistic', //for jtable and filter box
+        'app-component', //for jtable and filter box
         'account', //for account authentication
         'employee', //for employee list and details
         'customer',//for customer list and details

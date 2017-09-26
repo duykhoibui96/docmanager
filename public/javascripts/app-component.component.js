@@ -1,5 +1,11 @@
 angular
-    .module('statistic', ['ngStorage', 'ngRoute', 'ui.router'])
+    .module('app-component', ['ngStorage',
+        'ngRoute',
+        'ui.router',
+        'ui.bootstrap',
+        'uib/template/typeahead/typeahead-popup.html',
+        'uib/template/typeahead/typeahead-match.html',
+    ])
     .directive('searchBox', function ($rootScope) {
 
         return {
@@ -9,9 +15,8 @@ angular
             templateUrl: 'views/components/search-box.component.html',
             controller: function ($scope) {
 
-                var id = $scope.for + '-table';
+                var id = $scope.for+'-table';
                 $scope.selectedCat = $scope.searchCat[0].value;
-                console.log('asdf');
                 $scope.search = function () {
 
                     $rootScope.$emit('reload', {
@@ -23,7 +28,7 @@ angular
                             searchText: this.searchText,
                             cat: this.selectedCat
 
-                        }         
+                        }
 
                     })
 
@@ -41,14 +46,14 @@ angular
 
             restrict: 'EA',
             scope: {
-                   
+
                 for: '@'
 
             },
             templateUrl: 'views/components/filter-box.component.html',
             controller: function ($scope) {
 
-                var id = $scope.for + '-table';
+                var id = $scope.for+'-table';
 
                 $scope.filterId = Date.now() + 'filter';
                 $scope.mode = 'optional';
@@ -85,7 +90,7 @@ angular
                             endDate: endDate
 
                         }
-                        
+
                     });
 
                 };
@@ -95,7 +100,7 @@ angular
                         dateFormat: 'dd-mm-yy'
                     });
 
-                    $('.end-date').datepicker('setDate','today');
+                    $('.end-date').datepicker('setDate', 'today');
 
                     $scope.$watch('recentDays', function (newValue, oldValue) {
 
@@ -137,16 +142,30 @@ angular
                         paging: true,
                         jqueryuiTheme: true,
                         recordsLoaded: function (event, data) {
-                            
+
                             $(selector + ' .jtable-data-row').click(function () {
                                 var row_id = $(this).attr('data-record-key');
-                                console.log(row_id);
-                                console.log($scope.recordState);
-                                $state.transitionTo($scope.recordState, {
-        
-                                    id: row_id
-        
-                                })
+
+                                if ($scope.recordState)
+                                    $state.transitionTo($scope.recordState, {
+
+                                        id: row_id
+
+                                    })
+                                else if ($scope.recordLink) {
+
+                                    var record = data.records.find(function (item) {
+
+                                        return item[$scope.keyName] == row_id;
+
+                                    })
+
+                                    $(this).toggleClass('selected');
+
+                                    $scope.recordLink(record);
+
+                                }
+
                             });
 
                         },
@@ -189,7 +208,8 @@ angular
                                 return $.Deferred(function ($dfd) {
 
                                     $http.get(listUrl).then(function (response) {
-
+ 
+                                        $rootScope.$emit('list', response.data.Records);
                                         $dfd.resolve(response.data);
 
                                     }, function (err) {
@@ -205,12 +225,13 @@ angular
                             createAction: $scope.createForbidden ? undefined : $scope.createAction ? $scope.createAction : function (postData, params) {
 
                                 var createUrl = `${url}`;
-                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 
                                 return $.Deferred(function ($dfd) {
 
                                     $http.post(createUrl, data).then(function (response) {
 
+                                        $rootScope.$emit('refresh');
                                         $dfd.resolve(response.data);
 
                                     }, function (err) {
@@ -228,10 +249,11 @@ angular
                                 var array = postData.split('&');
                                 var updateUrl = `${url}/${array[0].split('=')[1]}`;
                                 postData = array.slice(1).join('&');
+                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');                                
 
                                 return $.Deferred(function ($dfd) {
 
-                                    $http.put(updateUrl, postData).then(function (response) {
+                                    $http.put(updateUrl, data).then(function (response) {
 
                                         $dfd.resolve(response.data);
 
@@ -285,7 +307,7 @@ angular
 
                     })
 
-                    
+
 
                     $(selector).jtable('load');
 
@@ -305,4 +327,129 @@ angular
 
         }
 
-    });
+    })
+    .filter('optionFilter', function () {
+        return function (array, search) {
+
+            if (!search)
+                return array;
+
+            var filteredArray = array.filter(function (item) {
+
+                return item.DisplayText.includes(search);
+
+            })
+
+            return filteredArray;
+
+
+        };
+    })
+    .directive('autocomplete', function () {
+
+        return {
+
+            restrict: 'EA',
+            scope: {
+
+                selected: '=',
+                list: '=',
+                placeholder: '@'
+
+            },
+            templateUrl: '/views/components/autocomplete.component.html',
+            controller: function ($scope) {
+
+
+
+            }
+
+        }
+
+
+    })
+    .directive('dialogAddBox', function (dialog, $http) {
+
+        return {
+
+            restrict: 'EA',
+            scope: {
+
+                trigger: '&',
+                url: '@',
+                excepted: '=',
+                title: '@'
+
+            },
+            templateUrl: '/views/components/dialog-add-box.component.html',
+            controller: function ($scope) {
+
+                $http.post($scope.url).then(function (response) {
+
+                    var options = response.data.Options;
+                    if ($scope.excepted)
+                        options = options.filter(function(item){
+
+                            return $scope.excepted.indexOf(item.Value) == -1;
+
+                        })
+
+                    $scope.list = options;
+
+                });
+
+                $scope.placeholder = $scope.url.includes('customers') ? 'Nhập mã hoặc tên khách hàng' : 'Nhập mã hoặc tên nhân viên';
+
+                $scope.addList = [];
+                $scope.add = function () {
+
+                    if ($scope.list.indexOf($scope.selected) == -1)
+                        return;
+
+                    if ($scope.addList.indexOf($scope.selected) >= 0) {
+
+                        return;
+
+                    }
+
+                    $scope.addList.push($scope.selected);
+                    $scope.selected = undefined;
+
+                }
+
+                $scope.remove = function (index) {
+
+                    $scope.addList.splice(index, 1);
+
+                }
+
+                $scope.submit = function () {
+
+
+                    $scope.trigger({
+
+                        records: $scope.addList
+
+                    });
+
+
+                    $scope.addList = [];
+
+
+                }
+
+                $scope.close = function () {
+
+
+                    $scope.trigger();
+
+
+                }
+
+            }
+
+        }
+
+
+
+    })

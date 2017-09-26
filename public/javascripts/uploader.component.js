@@ -6,7 +6,7 @@ angular
 
             restrict: 'EA',
             scope: true,
-            template: '<input id="uploader" type="file" name="uploadObj" multiple/>',
+            template: '<input id="uploader" type="file" name="uplfiles" multiple/>',
             controller: function ($scope) {
 
                 $(document).ready(function () {
@@ -28,7 +28,12 @@ angular
 
                     $('#uploader').on('fileuploaded', function (event, data, previewId, index) {
                         var records = data.response.Record.Document;
-                        $rootScope.$emit('reload', records);
+                        $rootScope.$emit('reload', {
+                            
+                            id: 'document-table',
+                            data: records
+
+                        });
                     });
 
                 });
@@ -69,7 +74,7 @@ angular
                 }
 
                 $scope.id = 'document-table';
-                $scope.title = 'Danh sách tập tin';
+                $scope.title = 'Danh sách tài liệu';
                 console.log($scope.url);
                 $scope.fields = {
 
@@ -115,7 +120,7 @@ angular
                         display: function (data) {
 
                             console.log(data);
-                            return `<a href="${data.record.path}" download><i class="fa fa-download" aria-hidden="true"></i></a>`;
+                            return `<a href="${data.record.path}" download="${data.record.originalname}"><i class="fa fa-download" aria-hidden="true"></i></a>`;
 
                         }
 
@@ -133,6 +138,7 @@ angular
 
                     var docs = Object.assign([], $scope.document);
 
+                    console.log(postData);
                     if (postData) {
                         if (postData.startDate) {
                             var start = new Date(Number(postData.startDate));

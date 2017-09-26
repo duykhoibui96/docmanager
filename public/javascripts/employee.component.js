@@ -181,9 +181,21 @@ angular
     })
     .controller('employeeDetailsCtrl', function ($scope, info, $http, dialog, $state, $rootScope) {
 
+        $scope.list = [];
         $scope.mainInfo = info;
         $scope.mode = 'info';
         $scope.info = {};
+
+        $rootScope.$on('list', function(event,data){
+
+            $scope.list = data.map(function(item){
+
+                return item.CustomerID;
+
+            })
+
+        });
+
         Object.keys($scope.mainInfo).map(function (key) {
 
             if (key !== '_id' && key !== 'EmplID' && key !== 'Mail')
@@ -335,22 +347,31 @@ angular
 
         }
 
-        $scope.addCustomer = function () {
+        $scope.showAddDialog = function () {
 
-            $http.put('/api/customers/' + this.customer, {
+            dialog.showAddDialog('/api/customers/options?selected=CustomerID%20Name', $scope.addCustomers, $scope.list, 'KHÁCH HÀNG QUẢN LÝ');
 
-                $push: {
-                    ResponsibleEmpl: $scope.mainInfo.EmplID
-                }
+        }
+
+        $scope.addCustomers = function (records) {
+
+            var array = records.map(function (item) {
+
+                return item.Value;
+
+            });
+
+            $http.put('/api/customers/', {
+
+                customerList: array,
+                EmplID: $scope.mainInfo.EmplID
 
             }).then(function (response) {
 
-                var res = response.data;
-                console.log(res);
-                if (res.Result === 'ERROR')
-                    dialog.showAlert('error', res.Message);
-                else
-                    $rootScope.$emit('reload');
+
+                $rootScope.$emit('reload', {
+                    id: 'customer-table'
+                });
 
 
             });

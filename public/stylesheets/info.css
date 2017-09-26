@@ -35,6 +35,11 @@
     padding: 20px 10px;
 }
 
+.user-content .list-group-item{
+    background: none;
+    border: none;
+}
+
 .user-content .list-group-item {
     padding-left: 10px;
 }

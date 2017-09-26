@@ -109,6 +109,7 @@
                 <div class="title title-icon-history">
                     danh sách khách hàng đang quản lý
                 </div>
+                <!-- 
                 <form class="form-inline" ng-submit="addCustomer()">
                     <div class="form-group">
                         <label for="customer">Chọn khách hàng:</label>
@@ -117,8 +118,11 @@
                         </select>
                     </div>
                     <button type="submit" class="button has-icon primary add">Thêm</button>
-                </form>
+                </form> -->
                 <search-box for="customer"></search-box>
+                <div class="text-right">
+                    <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm khách hàng</button>
+                </div>
                 <div class="table-responsive">
                     <customer-table></customer-table>
                 </div>

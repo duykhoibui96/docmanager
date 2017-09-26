@@ -1,9 +1,11 @@
-<div class="modal-header" ng-class="{'success': type == 'success', 'error': type == 'error'}">
-    <h3 class="modal-title" id="modal-title">{{title}}</h3>
-</div>
-<div class="modal-body" id="modal-body">
-    {{content}}
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="close()">OK</button>
-</div>
+<form ng-submit="close()">
+    <div class="modal-header" ng-class="{'success': type == 'success', 'error': type == 'error'}">
+        <h3 class="modal-title" id="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        {{content}}
+    </div>
+    <div class="modal-footer">
+        <span class="icon animate" ng-click="close()">OK</span>
+    </div>
+</form>

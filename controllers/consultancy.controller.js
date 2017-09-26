@@ -23,16 +23,16 @@ module.exports = {
         Consultancy.findOneAndUpdate({
             ConsID: ConsID
         }, {
-                $pushAll: {
-                    Document: req.files
-                }
-            }, {
-                new: true
-            }, function (err, doc) {
+            $pushAll: {
+                Document: req.files
+            }
+        }, {
+            new: true
+        }, function (err, doc) {
 
-                responseHelper.sendTableDetails(res, doc, err);
+            responseHelper.sendTableDetails(res, doc, err);
 
-            })
+        })
 
     },
 
@@ -43,18 +43,22 @@ module.exports = {
         Consultancy.findOneAndUpdate({
             ConsID: req.params.id
         }, {
-                $pop: {
-                    Document: req.body
-                }
-            }, {
-                new: true
-            }, function (err, doc) {
+            $pop: {
+                Document: req.body
+            }
+        }, {
+            new: true
+        }, function (err, doc) {
 
-                if (doc)
-                    fs.unlink(path);
-                responseHelper.sendTableDetails(res, doc, err);
+            if (doc)
+                fs.unlink(path, function (err) {
 
-            })
+                    console.log(err);
+
+                });
+            responseHelper.sendTableDetails(res, doc, err);
+
+        })
 
 
     },
@@ -105,6 +109,17 @@ module.exports = {
                 CustomerID: req.query.CustomerID
 
             }
+        else if (req.query.onlyCustomer) {
+            console.log('Got here');
+            Consultancy.find().select('CustomerID').exec(function (err, docs) {
+
+                console.log(docs);
+                responseHelper.sendResponse(res, docs, err);
+
+
+            });
+            return;
+        }
 
         Consultancy.find(filterObj, function (err, docs) {
 

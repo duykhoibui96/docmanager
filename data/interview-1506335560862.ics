@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+PRODID:-//Events Calendar//iCal4j 1.0//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VEVENT
+DTSTAMP:20170529T092824Z
+DTSTART:20170602T030000Z
+DTEND:20170602T050000Z
+SUMMARY:Interview with Gameloft
+UID:fb540975-c1f8-4159-90d4-6d17e01ccfc1@smartrecruiters.com
+LOCATION:7th Floor\, Etown 2 Building\, 364 Cong Hoa Street\, Tan Binh Di
+ s\, HCMC
+ORGANIZER;ROLE=NON-PARTICIPANT;CN=Thanh Nguyen:mailto:592be9b8e4b0582aa34
+ 56bf31ab3bc25-dc5e-4be2-88e3-473cef56dfd7@mail.smartrecruiters.com
+ATTENDEE;ROLE=REQ-PARTICIPANT;RSVP=TRUE;CN="Bùi Duy Khôi":mailto:duykhoi.
+ bui96@gmail.com
+ATTENDEE;ROLE=REQ-PARTICIPANT;RSVP=TRUE;CN=Thanh Nguyen:mailto:thanh.nguy
+ enxuan3@gameloft.com
+SEQUENCE:0
+DESCRIPTION:Schedule for interview between Gameloft and Bùi Duy Khôi (can
+ didate for [Vietnamese] Chương trình thực tập Lập trình 2017)\n\n10:00 A
+ M - 12:00 PM (Asia/Bangkok) Thanh Nguyen\n\n\n\n
+END:VEVENT
+END:VCALENDAR
