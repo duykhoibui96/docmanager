@@ -1,10 +1,10 @@
 angular
     .module('dialog', ['ui.bootstrap', 'uib/template/modal/window.html'])
-    .service('dialog', function ($uibModal) {
+    .service('dialog', function ($uibModal) { //methods for dialog
 
         var selectedDialog;
 
-        this.showAlert = function (type, msg) {
+        this.showAlert = function (type, msg) { //Show alert dialog
 
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -36,21 +36,21 @@ angular
 
         }
 
-        this.showAddDialog = function (url, trigger, excepted, title) {
+        this.showAddDialog = function (url, callback, excepted, title) {//show add dialog
 
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                template: `<dialog-add-box title="${title}" excepted="excepted" url="${url}" trigger="trigger(records)"></dialog-add-box>`,
+                template: `<dialog-add-box title="${title}" excepted="excepted" url="${url}" callback="callback(records)"></dialog-add-box>`,
                 windowClass: 'app-modal-window',
                 controller: function ($scope, $uibModalInstance) {
 
                     $scope.excepted = excepted;
-                    $scope.trigger = function(records){
+                    $scope.callback = function(records){
                      
                         if (records)
-                            trigger(records);
+                            callback(records);
                             
                         $scope.close();
                         

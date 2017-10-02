@@ -145,8 +145,9 @@ angular
 
 
     })
-    .controller('studyDetailsCtrl', function ($scope, info, seminars, $http, dialog, $http, $rootScope) {
+    .controller('studyDetailsCtrl', function ($scope, info, seminars, $http, dialog, $http, $rootScope, auth) {
 
+        $scope.auth = auth;
         $scope.uploadUrl = '/api/studies/files/' + info.StudyID;
         $scope.mainInfo = info;
         $scope.mode = 'info';
@@ -221,6 +222,7 @@ angular
                         EmplList: $scope.mainInfo.StudyEmpl.length > 0 ? $scope.mainInfo.StudyEmpl : 'empty'
 
                     }
+                    $scope.deleteForbidden = !auth.isPermitted('study-studyempl-edit');
 
                     $scope.deleteAction = function (postData) {
 
@@ -264,6 +266,7 @@ angular
 
                     $scope.loadEmployees();
                     $scope.emplType = 'Instructor';
+                    $scope.deleteForbidden = !auth.isPermitted('study-instructor-edit');
                     $scope.deleteAction = function (postData) {
 
                         return $.Deferred(function ($dfd) {
@@ -327,7 +330,7 @@ angular
 
             var exceptedList = $scope.mainInfo[$scope.emplType];
             var title = $scope.emplType === 'StudyEmpl' ? 'NHÂN VIÊN NGHIÊN CỨU' : 'NHÂN VIÊN HƯỚNG DẪN'; 
-            dialog.showAddDialog('/api/employees/options?selected=EmplID%20Name', $scope.addEmployees, exceptedList, title);
+            dialog.showAddDialog('/api/employees/options', $scope.addEmployees, exceptedList, title);
 
         }
 

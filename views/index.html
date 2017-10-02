@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/assets/stylesheets/login.css">
     <link rel="stylesheet" href="/assets/stylesheets/info.css">
     <link rel="stylesheet" href="/assets/stylesheets/dialog.css">
+    <link rel="stylesheet" href="/assets/stylesheets/dashboard.css">
 
 
     <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -86,14 +87,14 @@
                         <ul class="nav navbar-nav">
                             <li class="main-select" ng-class="{ active: option == 'info'}"><a ui-sref="info">Thông tin cá nhân</a></li>
                             <li class="main-select" ng-class="{ active: option == 'customer'}"><a ui-sref="customer">Khách hàng</a></li>
-                            <li class="main-select" ng-class="{ active: option == 'consultancy'}"><a ui-sref="consultancy.list({ mode: 'consulting' })">Tư vấn</a></li>
-                            <li class="main-select" ng-class="{ active: option == 'employee'}"><a ui-sref="employee">Nhân viên</a></li>
-                            <li class="main-select" ng-class="{ active: option == 'study'}"><a ui-sref="study">Nghiên cứu</a></li>
-                            <li class="main-select" ng-class="{ active: option == 'seminar'}"><a ui-sref="seminar">Hội thảo</a></li>
+                            <li class="main-select" ng-if="auth.isPermitted('consultancy-access')" ng-class="{ active: option == 'consultancy'}"><a ui-sref="consultancy.list({ mode: 'consulting' })">Tư vấn</a></li>
+                            <li class="main-select" ng-if="auth.isPermitted('employee-access')" ng-class="{ active: option == 'employee'}"><a ui-sref="employee">Nhân viên</a></li>
+                            <li class="main-select" ng-if="auth.isPermitted('study-access')" ng-class="{ active: option == 'study'}"><a ui-sref="study">Nghiên cứu</a></li>
+                            <li class="main-select" ng-if="auth.isPermitted('seminar-access')" ng-class="{ active: option == 'seminar'}"><a ui-sref="seminar">Hội thảo</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="main-select"><a ui-sref="info"><span class="glyphicon glyphicon-user"></span> Thông tin cá nhân</a></li>
-                            <li class="main-select"><a href="javascript:;" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a></li>
+                            <li class="main-select"><a href="javascript:;" ng-click="auth.logout()"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ var CustomerSchema = new Schema({
     Name: String,
     Address: String,
     Phone: String,
-    Representative: Number,
+    Representative: String,
     ResponsibleEmpl: [Number]
     
 

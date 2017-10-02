@@ -12,7 +12,7 @@ var ConsultancySchema = new Schema({
     },
     ConsultingEmplID: Number,
     CustomerID: Number,
-    ConsultedEmplID: Number,
+    ConsultedPerson: String,
     Content: String,
     Document: [],
     Time: String

@@ -39,16 +39,6 @@ angular
                         })
 
 
-                    },
-
-                    employees: function ($http) {
-
-                        return $http.post('api/employees/options?selected=EmplID%20Name').then(function (response) {
-
-                            return response.data;
-
-                        })
-
                     }
 
                 }
@@ -114,7 +104,6 @@ angular
 
                         title: 'Đại diện',
                         width: '30%',
-                        options: 'api/employees/options?selected=EmplID%20Name',
                         list: $scope.hideColumn ? !$scope.hideColumn.includes('Representative') : true
 
                     }
@@ -212,9 +201,9 @@ angular
 
 
     })
-    .controller('customerDetailsCtrl', function ($scope, info, employees, $http, dialog, $rootScope) {
+    .controller('customerDetailsCtrl', function ($scope, info, $http, dialog, $rootScope,auth) {
 
-        $scope.emplList = employees.Options;
+        $scope.auth = auth;
         $scope.mainInfo = info;
         $scope.mode = 'info';
         $scope.info = {};
@@ -278,7 +267,7 @@ angular
                         }
 
                     ];
-                    $scope.deleteForbidden = false;
+                    $scope.deleteForbidden = !auth.isPermitted('customer-employee-edit');
                     $scope.deleteAction = function (postData) {
 
                         console.log(postData.EmplID);
@@ -356,7 +345,7 @@ angular
 
         $scope.showAddDialog = function () {
 
-            dialog.showAddDialog('/api/employees/options?selected=EmplID%20Name', $scope.addEmployees, $scope.mainInfo.ResponsibleEmpl, 'NHÂN VIÊN PHỤ TRÁCH');
+            dialog.showAddDialog('/api/employees/options', $scope.addEmployees, $scope.mainInfo.ResponsibleEmpl, 'NHÂN VIÊN PHỤ TRÁCH');
 
         }
 

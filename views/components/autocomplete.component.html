@@ -1,1 +1,5 @@
-<input type="text" ng-model="selected" uib-typeahead="item as item.DisplayText for item in list | optionFilter: $viewValue | limitTo: 10" class="form-control" typeahead-template-url="/views/components/option.component.html" placeholder="{{placeholder}}" required>
+<input type="text" name="{{name}}" ng-model="selected" uib-typeahead="item as item.DisplayText for item in getArray($viewValue)" class="form-control" typeahead-template-url="/views/components/option.component.html" placeholder="{{placeholder}}" typeahead-loading="loading" typeahead-no-results="noResults" required>
+<i ng-show="loading" class="fa fa-spinner fa-2x fa-spin"></i>
+<div ng-show="noResults">
+  <i class="glyphicon glyphicon-remove icon" ng-click="noResults = false"></i> Dữ liệu không tồn tại
+</div>

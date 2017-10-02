@@ -76,7 +76,30 @@ module.exports = {
     listForOptions: function (req, res) {
 
         var selected = req.query.selected;
-        Consultancy.find().select(selected).exec(function (err, docs) {
+        var filterObj = {};
+        if (req.query.search) {
+
+            var search = req.query.search;
+            var objAsNumber = Number(search);
+            console.log(objAsNumber);
+            if (isNaN(objAsNumber))
+                filterObj = {
+
+                    Name: { "$regex": search, "$options": "i" }
+
+                };
+            else
+                filterObj = {
+
+                    ConsID: objAsNumber
+
+                };
+
+
+            selected = 'ConsID Name';
+
+        }
+        Consultancy.find(filterObj).select(selected).exec(function (err, docs) {
 
             responseHelper.sendTableOptions(res, docs, err);
 
@@ -93,13 +116,6 @@ module.exports = {
             filterObj = {
 
                 ConsultingEmplID: req.query.ConsultingEmplID
-
-            }
-
-        else if (req.query.ConsultedEmplID)
-            filterObj = {
-
-                ConsultedEmplID: req.query.ConsultedEmplID
 
             }
 

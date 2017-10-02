@@ -6,7 +6,7 @@ angular
         'uib/template/typeahead/typeahead-popup.html',
         'uib/template/typeahead/typeahead-match.html',
     ])
-    .directive('searchBox', function ($rootScope) {
+    .directive('searchBox', function ($rootScope) { //for search box by ID and Name
 
         return {
 
@@ -40,7 +40,7 @@ angular
 
 
     })
-    .directive('filterBox', function ($rootScope) {
+    .directive('filterBox', function ($rootScope) { //for time result filter box
 
         return {
 
@@ -122,7 +122,8 @@ angular
 
 
     })
-    .directive('customTable', function ($state, $localStorage, $http) {
+    .directive('customTable', function ($state, $localStorage, $http) { //jtable model
+        //this is an abstract table that fields and methods need to be overwritten
 
         return {
 
@@ -208,8 +209,14 @@ angular
                                 return $.Deferred(function ($dfd) {
 
                                     $http.get(listUrl).then(function (response) {
- 
-                                        $rootScope.$emit('list', response.data.Records);
+
+                                        $rootScope.$emit('list', {
+
+                                            id: $scope.id,
+                                            data: response.data.Records,
+                                            keyname: $scope.keyName
+
+                                        });
                                         $dfd.resolve(response.data);
 
                                     }, function (err) {
@@ -249,7 +256,7 @@ angular
                                 var array = postData.split('&');
                                 var updateUrl = `${url}/${array[0].split('=')[1]}`;
                                 postData = array.slice(1).join('&');
-                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');                                
+                                var data = JSON.parse('{"' + decodeURI(postData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 
                                 return $.Deferred(function ($dfd) {
 
@@ -302,6 +309,9 @@ angular
                                 data.form.find(`input[name=${$scope.keyName}]`).val(Date.now());
                             }
 
+                            if ($scope.customFormCreated)
+                                $scope.customFormCreated(event, data);
+
                         }
 
 
@@ -328,7 +338,7 @@ angular
         }
 
     })
-    .filter('optionFilter', function () {
+    .filter('optionFilter', function () { //For filtering in array by ng-repeat
         return function (array, search) {
 
             if (!search)
@@ -345,7 +355,7 @@ angular
 
         };
     })
-    .directive('autocomplete', function () {
+    .directive('autocomplete', function () { //For autocomplete input textbox
 
         return {
 
@@ -354,13 +364,32 @@ angular
 
                 selected: '=',
                 list: '=',
-                placeholder: '@'
+                placeholder: '@',
+                url: '=',
+                name: '@',
+                excepted: '='
 
             },
             templateUrl: '/views/components/autocomplete.component.html',
-            controller: function ($scope) {
+            controller: function ($scope, $http) {
 
+                $scope.getArray = function (search) {
 
+                    return $http.post($scope.url + '?search=' + search).then(function (response) {
+
+                        var options = response.data.Options;
+                        if ($scope.excepted)
+                            options = options.filter(function (item) {
+
+                                return $scope.excepted.indexOf(item.Value) == -1;
+
+                            })
+
+                        return options;
+
+                    })
+
+                }
 
             }
 
@@ -368,14 +397,14 @@ angular
 
 
     })
-    .directive('dialogAddBox', function (dialog, $http) {
+    .directive('dialogAddBox', function (dialog, $http) { //For dialog add box
 
         return {
 
             restrict: 'EA',
             scope: {
 
-                trigger: '&',
+                callback: '&',
                 url: '@',
                 excepted: '=',
                 title: '@'
@@ -384,21 +413,32 @@ angular
             templateUrl: '/views/components/dialog-add-box.component.html',
             controller: function ($scope) {
 
-                $http.post($scope.url).then(function (response) {
+                // $http.post($scope.url).then(function (response) {
 
-                    var options = response.data.Options;
-                    if ($scope.excepted)
-                        options = options.filter(function(item){
+                //     var options = response.data.Options;
+                //     if ($scope.excepted)
+                //         options = options.filter(function(item){
 
-                            return $scope.excepted.indexOf(item.Value) == -1;
+                //             return $scope.excepted.indexOf(item.Value) == -1;
 
-                        })
+                //         })
 
-                    $scope.list = options;
+                //     $scope.list = options;
 
-                });
+                // });
 
-                $scope.placeholder = $scope.url.includes('customers') ? 'Nhập mã hoặc tên khách hàng' : 'Nhập mã hoặc tên nhân viên';
+                var getPlaceholder = function () {
+
+                    if ($scope.url.includes('customers'))
+                        return 'Nhập mã hoặc tên khách hàng';
+                    else if ($scope.url.includes('employees'))
+                        return 'Nhập mã hoặc tên nhân viên';
+
+                    return 'Nhập mã hoặc tên nghiên cứu';
+
+                }
+
+                $scope.placeholder = getPlaceholder();
 
                 $scope.addList = [];
                 $scope.add = function () {
@@ -426,7 +466,7 @@ angular
                 $scope.submit = function () {
 
 
-                    $scope.trigger({
+                    $scope.callback({
 
                         records: $scope.addList
 
@@ -441,7 +481,7 @@ angular
                 $scope.close = function () {
 
 
-                    $scope.trigger();
+                    $scope.callback();
 
 
                 }

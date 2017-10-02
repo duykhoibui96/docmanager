@@ -31,30 +31,26 @@
             <form ng-submit="update()" class="form-horizontal custom-form">
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
-                        required>
+                    <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}"
+                        required ng-disabled="isLoading || !auth.isPermitted('customer-edit')">
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
                     <input type="text" name="Address" class="form-control custom-input" ng-model="info.Address" value="{{mainInfo.Address}}"
-                        ng-disable="isLoading" required>
+                        required ng-disabled="isLoading || !auth.isPermitted('customer-edit')">
                 </div>
                 <div class="form-group">
                     <label>Điện thoại</label>
-                    <input type="text" name="Phone" class="form-control custom-input" ng-model="info.Phone" value="{{mainInfo.Phone}}" ng-disable="isLoading"
-                        required>
+                    <input type="text" name="Phone" class="form-control custom-input" ng-model="info.Phone" value="{{mainInfo.Phone}}"
+                        required ng-disabled="isLoading || !auth.isPermitted('customer-edit')">
                 </div>
                 <div class="form-group">
                     <label style="display: block">Người đại diện</label>
-                    <!-- <div class="select-icon">
-                        <a ui-sref="employee.details({ EmplID: info.Representative })"><span class="fa fa-2x fa-user"></span></a>
-                    </div> -->
-                    <select class="form-control custom-input" ng-model="info.Representative" style="display: inline-block">
-                        <option ng-repeat="obj in emplList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
-                    </select>
+                    <input type="text" name="Representative" class="form-control custom-input" ng-model="info.Representative" value="{{mainInfo.Representative}}"
+                    required ng-disabled="isLoading || !auth.isPermitted('customer-edit')">
 
                 </div>
-                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                <div class="text-right" ng-if="auth.isPermitted('customer-edit')" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
                     <button type="submit" class="button has-icon primary submit">
                                                 <div ng-show="isLoading">
                                                     Đang lưu ...
@@ -83,7 +79,7 @@
             </form> -->
             <!-- <add-box trigger="addEmployees(records)" selected="employee" list="emplList" placeholder="Nhập mã hoặc tên nhân viên"></add-box> -->
             <search-box for="employee"></search-box>
-            <div class="text-right">
+            <div class="text-right" ng-if="auth.isPermitted('customer-employee-edit')">
                 <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nhân viên</button>
             </div>
             <employee-table></employee-table>

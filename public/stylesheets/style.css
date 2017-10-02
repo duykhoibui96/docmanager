@@ -6,10 +6,10 @@
 @media(max-width:450px) {
     .navbar-brand,
     .navbar-toggle {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
     body {
-        font-size: 1.3em;
+        font-size: 1.2em;
         font-family: 'Karla', sans-serif !important;
         position: relative;
         background: white;
@@ -24,14 +24,14 @@
 
 @media(min-width:451px) {
     body {
-        font-size: 1.5em;
+        font-size: 1.3em;
         font-family: 'Karla', sans-serif !important;
         position: relative;
         background: white;
     }
     .navbar-brand,
     .navbar-toggle {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
     .space-between-brand {
         padding-left: 100px !important;
@@ -60,7 +60,6 @@
     -webkit-transform: scale3d(0.5, 0.5, 0.5);
     -moz-transform: scale3d(0.5, 0.5, 0.5);
     transform: scale3d(0.5, 0.5, 0.5);
-    ]
 }
 
 .animation-zoom.ng-enter-active {
@@ -202,14 +201,19 @@
     color: white;
 }
 
-.main-select:hover,
-.main-select:focus,
 .main-select.active,
-.main-select:hover a,
-.main-select:focus a,
 .main-select.active a {
     background: linear-gradient(to bottom, #2d89b4, #297ca3);
     color: white !important;
+    font-weight: bold;
+}
+
+.main-select:hover:not(.active),
+.main-select:focus:not(.active),
+.main-select:hover:not(.active) a,
+.main-select:focus:not(.active) a {
+
+    background: none;
     font-weight: bold;
 }
 
@@ -218,9 +222,7 @@
 }
 
 .icon.animate:hover {
-
     font-weight: bold;
-
 }
 
 .affix {
@@ -244,10 +246,8 @@ jtable select {
 }
 
 .jtable-data-row.selected {
-
     background: gray;
     color: white;
-
 }
 
 .ui-dialog {
@@ -288,7 +288,6 @@ jtable select {
 }
 
 .custom-form.theme-2 {
-    
     border-style: inset;
     border-width: 2px;
 }
@@ -541,6 +540,13 @@ app-table .title .fa {
     position: relative;
     top: -2px;
 } */
+
+input[disabled=disabled],
+select[disabled=disabled] {
+    border: none;
+    background: none;
+    cursor: default !important;
+}
 
 table td {
     line-height: 10px;

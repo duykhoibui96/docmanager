@@ -47,6 +47,13 @@ module.exports = {
                 })
             }
 
+            if (req.query.recent && docs.length > 10) {
+
+                var index = docs.length - 10;
+                docs = docs.slice(index);
+                
+            }
+
             res.status(200).send({
 
                 Result: 'OK',

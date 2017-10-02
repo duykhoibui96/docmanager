@@ -1,5 +1,8 @@
 angular
-    .module('consultancy', ['ui.router'])
+    .module('consultancy', ['ui.router', 'ui.bootstrap',
+        'uib/template/typeahead/typeahead-popup.html',
+        'uib/template/typeahead/typeahead-match.html',
+    ])
     .config(function ($stateProvider) {
 
         $stateProvider
@@ -19,7 +22,30 @@ angular
 
                 url: '/list',
                 templateUrl: 'views/consultancy/list.html',
-                controller: 'consultancyListCtrl'
+                controller: 'consultancyListCtrl',
+                resolve: {
+
+                    employees: function ($http) {
+
+                        return $http.post('api/employees/options?selected=EmplID%20Name').then(function (response) {
+
+                            return response.data;
+
+                        })
+
+                    },
+
+                    customers: function ($http) {
+
+                        return $http.post('api/customers/options?selected=CustomerID%20Name').then(function (response) {
+
+                            return response.data;
+
+                        })
+
+                    }
+
+                }
 
             })
             .state('consultancy.details', {
@@ -101,8 +127,14 @@ angular
 
                         title: 'Nhân viên tư vấn',
                         width: '20%',
-                        options: 'api/employees/options?selected=EmplID%20Name',
-                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultingEmplID') : true
+                        // options: 'api/employees/options?selected=EmplID%20Name',
+                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultingEmplID') : true,
+                        input: function (data) {
+
+                            console.log($scope.emplList);
+                            return `<input type="text" name="ConsultingEmplID" uib-typeahead="item as item.DisplayText for item in emplList | optionFilter: $viewValue | limitTo: 10" class="form-control" typeahead-template-url="/views/components/option.component.html" placeholder="Nhập mã hoặc tên nhân viên" required>`;
+
+                        }
 
                     },
 
@@ -115,12 +147,11 @@ angular
 
                     },
 
-                    ConsultedEmplID: {
+                    ConsultedPerson: {
 
-                        title: 'Nhân viên được tư vấn',
+                        title: 'Người được tư vấn',
                         width: '20%',
-                        options: 'api/employees/options?selected=EmplID%20Name',
-                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultedEmplID') : true
+                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultedPerson') : true
 
                     },
 
@@ -147,12 +178,15 @@ angular
         }
 
     })
-    .controller('consultancyListCtrl', function ($scope,$rootScope) {
+    .controller('consultancyListCtrl', function ($scope, $rootScope, employees, customers) {
 
+        $scope.emplList = employees.Options;
+        $scope.customerList = customers.Options;
 
     })
-    .controller('consultancyDetailsCtrl', function ($scope, info, employees, customers, $http, dialog) {
+    .controller('consultancyDetailsCtrl', function ($scope, info, employees, customers, $http, dialog, auth) {
 
+        $scope.auth = auth;
         $scope.uploadUrl = '/api/consultancies/files/' + info.ConsID;
         $scope.empList = employees.Options;
         $scope.cusList = customers.Options;
@@ -163,9 +197,9 @@ angular
 
             if (key !== '_id' && key !== 'ConsID' && key !== 'Document')
                 $scope.info[key] = $scope.mainInfo[key];
-            if (key === 'ConsultingEmplID' || key === 'CustomerID' || key === 'ConsultedEmplID' )
+            if (key === 'ConsultingEmplID' || key === 'CustomerID' || key === 'ConsultedEmplID')
                 $scope.info[key] = $scope.info[key].toString();
-        })  
+        })
 
         console.log($scope.mainInfo);
         console.log($scope.info);

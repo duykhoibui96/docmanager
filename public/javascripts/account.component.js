@@ -33,11 +33,12 @@ angular
                 $localStorage.auth = {
 
                     username: data.Username,
-                    token: data.EmplID
+                    token: data.EmplID,
+                    permissions: data.permissions
 
 
                 }
-                console.log($localStorage);
+                console.log($localStorage.auth);
                 $state.transitionTo('info');
 
 

@@ -27,8 +27,31 @@ module.exports = {
     listForOptions: function (req, res) {
 
         var selected = req.query.selected;
-        console.log(selected);
-        Employee.find().select(selected).exec(function (err, docs) {
+        var filterObj = {};
+        if (req.query.search) {
+
+            var search = req.query.search;
+            var objAsNumber = Number(search);
+            console.log(objAsNumber);
+            if (isNaN(objAsNumber))
+                filterObj = {
+
+                    Name: { "$regex": search, "$options": "i" }
+
+                };
+            else
+                filterObj = {
+
+                    EmplID: objAsNumber
+
+                };
+
+
+            selected = 'EmplID Name';
+
+        }
+
+        Employee.find(filterObj).select(selected).exec(function (err, docs) {
 
             responseHelper.sendTableOptions(res, docs, err);
 

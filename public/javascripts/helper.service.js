@@ -1,6 +1,6 @@
 angular
     .module('helper', [])
-    .service('loading', function ($timeout) {
+    .service('loading', function ($timeout) { //provide methods for show/hide loading process
 
         this.start = function () {
 
@@ -21,7 +21,7 @@ angular
 
 
     })
-    .service('auth', function ($localStorage, $state) {
+    .service('auth', function ($localStorage, $state) { //for authentication
 
         this.isAuthenticated = function () {
 
@@ -29,11 +29,27 @@ angular
 
         }
 
+        
+
         this.getUsername = function () {
 
             if ($localStorage.auth)
                 return $localStorage.auth.username;
             return null;
+
+        }
+
+        this.isPermitted = function(permissionName) {
+
+            if (!$localStorage.auth || !$localStorage.auth.permissions)
+                return false;
+
+            return $localStorage.auth.permissions.find(function(item){
+
+                return item.includes(permissionName);
+
+            });
+            
 
         }
 
@@ -46,7 +62,7 @@ angular
         }
 
     })
-    .directive('loading', function () {
+    .directive('loading', function () { //Showing loading process while transition happens between two states
 
         return {
 
@@ -56,7 +72,7 @@ angular
         }
 
     })
-    .directive('compareTo', function () {
+    .directive('compareTo', function () {//For confirm password input textbox
         return {
             require: "ngModel",
             scope: {
@@ -74,7 +90,7 @@ angular
             }
         };
     })
-    .filter('objLimitTo', function(){
+    .filter('objLimitTo', function(){ //Limit numbers of element display in array by ng-repeat
         return function(obj, limit){
             var keys = Object.keys(obj);
             if(keys.length < 1) return [];

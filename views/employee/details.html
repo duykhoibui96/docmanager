@@ -20,7 +20,6 @@
                     <button type="button" ng-show="isCurrentEmployee()" ng-click="switchMode('password')">đổi mật khẩu</button>
                     <button type="button" ng-click="switchMode('customer')">quản lý khách hàng</button>
                     <button type="button" ng-click="switchMode('consulting')">tư vấn</button>
-                    <button type="button" ng-click="switchMode('consulted')">được tư vấn</button>
                     <button type="button" ng-click="switchMode('study')">nghiên cứu</button>
                     <button type="button" ng-click="switchMode('instruct')">hướng dẫn</button>
                 </div>
@@ -40,26 +39,26 @@
                     <div class="md-dialog-content">
                         <div class="form-group">
                             <label>Tên</label>
-                            <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
-                                required>
+                            <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}"
+                                required ng-disable="isLoading || (!isCurrentEmployee() && !auth.isPermitted('employee-edit'))">
                         </div>
                         <div class="form-group">
                             <label>Phòng ban</label>
                             <input type="text" name="childDepartment" class="form-control custom-input" ng-model="info.ChildDepartment" value="{{mainInfo.ChildDepartment}}"
-                                ng-disable="isLoading" required>
+                            ng-disable="isLoading || (!isCurrentEmployee() && !auth.isPermitted('employee-edit'))" required>
                         </div>
                         <div class="form-group">
                             <label>Chức vụ</label>
                             <input type="text" name="officerCode" class="form-control custom-input" ng-model="info.OfficerCode" value="{{mainInfo.OfficerCode}}"
-                                ng-disable="isLoading" required>
+                            ng-disable="isLoading || (!isCurrentEmployee() && !auth.isPermitted('employee-edit'))" required>
                         </div>
                         <div class="form-group">
                             <label>Công việc</label>
                             <input type="text" name="jobTitle" class="form-control custom-input" ng-model="info.JobTitle" value="{{mainInfo.JobTitle}}"
-                                ng-disable="isLoading" required>
+                            ng-disable="isLoading || (!isCurrentEmployee() && !auth.isPermitted('employee-edit'))" required>
                         </div>
                     </div>
-                    <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                    <div class="text-right" ng-if="isCurrentEmployee() || auth.isPermitted('employee-edit')" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
                         <button type="submit" class="button has-icon primary submit">
                                             <div ng-show="isLoading">
                                                 Đang lưu ...
@@ -72,7 +71,7 @@
                     </div>
                 </form>
             </div>
-            <div ng-switch-when="password">
+            <div ng-if="isCurrentEmployee()" ng-switch-when="password">
                 <div class="title title-icon-form" style="margin-bottom: 50px">
                     đổi mật khẩu
                 </div>
@@ -120,7 +119,7 @@
                     <button type="submit" class="button has-icon primary add">Thêm</button>
                 </form> -->
                 <search-box for="customer"></search-box>
-                <div class="text-right">
+                <div class="text-right" ng-if="isCurrentEmployee() || auth.isPermitted('employee-customer-edit')">
                     <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm khách hàng</button>
                 </div>
                 <div class="table-responsive">
@@ -136,20 +135,14 @@
                     <consultancy-table></consultancy-table>
                 </div>
             </div>
-            <div ng-switch-when="consulted">
-                <div class="title title-icon-history">
-                    danh sách được tư vấn
-                </div>
-                <filter-box for="consultancy"></filter-box>
-                <div class="table-responsive">
-                    <consultancy-table></consultancy-table>
-                </div>
-            </div>
             <div ng-switch-when="study">
                 <div class="title title-icon-history">
                     danh sách nghiên cứu
                 </div>
                 <filter-box for="study"></filter-box>
+                <div class="text-right" ng-if="isCurrentEmployee() || auth.isPermitted('employee-customer-edit')">
+                    <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nghiên cứu</button>
+                </div>
                 <div class="table-responsive">
                     <study-table></study-table>
                 </div>
@@ -159,6 +152,9 @@
                     danh sách hướng dẫn
                 </div>
                 <filter-box for="study"></filter-box>
+                <div class="text-right" ng-if="isCurrentEmployee() || auth.isPermitted('employee-customer-edit')">
+                    <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nghiên cứu</button>
+                </div>
                 <div class="table-responsive">
                     <study-table></study-table>
                 </div>

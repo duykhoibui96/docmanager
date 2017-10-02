@@ -1,0 +1,120 @@
+<div class="row" ng-if="auth.isPermitted('consultancy-access') && auth.isPermitted('study-access')">
+    <div class="col-sm-12">
+        <!-- tabs top -->
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="col-md-4" ng-class="{ active: mode == 'intro'}" ng-click="mode = 'intro'"><a href="javascript:;" data-toggle="tab">Giới thiệu</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'consultancy'}" ng-click="mode = 'consultancy'"><a href="javascript:;" data-toggle="tab">Tư vấn gần đây</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'study'}" ng-click="mode = 'study'"><a href="javascript:;" data-toggle="tab">Nghiên cứu gần đây</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /tabs -->
+<div ng-switch on="mode">
+    <div ng-switch-when="intro">
+        <div class="title title-icon-list">
+            giới thiệu
+        </div>
+        <div class="text-center">
+            <img src="/assets/images/fpt-image.jpg" alt="" style="width: 100%">
+        </div>
+        <div>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-weight: bold">Giới thiệu</div>
+                    <div class="panel-body">
+                        Trong suốt hơn 20 năm phát triển, Công ty Hệ thống Thông tin FPT (FPT Information System - FPT IS) là nhà tích hợp hệ thống,
+                        cung cấp giải pháp hàng đầu Việt Nam và khu vực. Sở hữu năng lực công nghệ được thừa nhận bởi các
+                        khách hàng và đối tác toàn cầu, FPT IS mang đến những dịch vụ và giải pháp phục vụ các lĩnh vực trọng
+                        yếu của từng quốc gia, như: Viễn thông, Ngân hàng - Tài chính, Y tế, Giao thông vận tải, Tài chính
+                        công, Điện, Nước, Gas và Doanh nghiệp.
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-weight: bold">Chi tiết</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Tên đăng ký:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> CÔNG TY HỆ THỐNG THÔNG TIN FPT </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Địa chỉ đăng ký:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> Tầng 22 tòa nhà Keangnam Landmark 72 Tower, E6 Phạm Hùng, Hà Nội</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Điện thoại:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">84 - 24 3562 6000 hoặc 84 - 24 7300 7373</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Tên người đại diện và chức vụ:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">PHẠM MINH TUẤN – CEO</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Địa chỉ :</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">Tầng 22 tòa nhà Keangnam Landmark 72 Tower, E6 Phạm Hùng, Hà Nội</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">FAX:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> 84 - 24 356 24 850</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Quy mô nhân sự:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">3,200 </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Trang chủ URL:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static"> www.fpt-is.com</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Năm thành lập:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">1994</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Loại hình công ty:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">Công ty trách nhiệm hữu hạn</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-switch-when="consultancy">
+        <div class="title title-icon-history">
+            lịch sử tư vấn gần đây
+        </div>
+        <div class="table-responsive">
+            <consultancy-table></consultancy-table>
+        </div>
+    </div>
+    <div ng-switch-when="study">
+        <div class="title title-icon-history">
+            lịch sử nghiên cứu gần đây
+        </div>
+        <div class="table-responsive">
+            <study-table></study-table>
+        </div>
+    </div>
+</div>

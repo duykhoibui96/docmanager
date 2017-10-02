@@ -179,18 +179,21 @@ angular
 
 
     })
-    .controller('employeeDetailsCtrl', function ($scope, info, $http, dialog, $state, $rootScope) {
+    .controller('employeeDetailsCtrl', function ($scope, info, $http, dialog, $state, $rootScope,auth) {
 
+        $scope.auth = auth;
         $scope.list = [];
         $scope.mainInfo = info;
         $scope.mode = 'info';
         $scope.info = {};
 
-        $rootScope.$on('list', function(event,data){
+        $rootScope.$on('list', function (event, block) {
 
-            $scope.list = data.map(function(item){
+            var data = block.data;
+            var keyName = block.keyname;
+            $scope.list = data.map(function (item) {
 
-                return item.CustomerID;
+                return item[keyName];
 
             })
 
@@ -233,7 +236,7 @@ angular
                         }
 
                     ];
-                    $scope.deleteForbidden = false;
+                    $scope.deleteForbidden = !auth.isPermitted('employee-customer-edit');
                     $scope.filterList = {
 
                         EmplID: $scope.mainInfo.EmplID
@@ -251,18 +254,39 @@ angular
                     }
                     break;
 
-                case 'consulted':
-                    $scope.deleteForbidden = true;
-                    $scope.hideColumn = 'ConsultedEmplID';
-                    $scope.filterList = {
+                case 'study':
+                    $scope.deleteForbidden = !auth.isPermitted('employee-customer-edit');
+                    $scope.deleteAction = function (postData) {
 
-                        ConsultedEmplID: $scope.mainInfo.EmplID
+                        return $.Deferred(function ($dfd) {
+                            $http.put('/api/studies/' + postData.StudyID, {
+
+                                $pop: {
+
+                                    StudyEmpl: $scope.mainInfo.EmplID
+
+                                }
+
+                            }).then(function (response) {
+
+                                var res = response.data;
+                                console.log(res);
+                                if (res.Result === 'ERROR') {
+                                    dialog.showAlert('error', res.Message);
+                                    $dfd.reject();
+
+                                } else {
+
+                                    $dfd.resolve(res);
+
+                                }
+
+
+                            })
+
+                        });
 
                     }
-                    break;
-
-                case 'study':
-                    $scope.deleteForbidden = true;
                     $scope.hideColumn = 'StudyEmpl';
                     $scope.filterList = {
 
@@ -271,7 +295,38 @@ angular
                     }
                     break;
                 case 'instruct':
-                    $scope.deleteForbidden = true;
+                    $scope.deleteForbidden = !auth.isPermitted('employee-customer-edit');
+                    $scope.deleteAction = function (postData) {
+
+                        return $.Deferred(function ($dfd) {
+                            $http.put('/api/studies/' + postData.StudyID, {
+
+                                $pop: {
+
+                                    Instructor: $scope.mainInfo.EmplID
+
+                                }
+
+                            }).then(function (response) {
+
+                                var res = response.data;
+                                console.log(res);
+                                if (res.Result === 'ERROR') {
+                                    dialog.showAlert('error', res.Message);
+                                    $dfd.reject();
+
+                                } else {
+
+                                    $dfd.resolve(res);
+
+                                }
+
+
+                            })
+
+                        });
+
+                    }
                     $scope.hideColumn = 'Instructor';
                     $scope.filterList = {
 
@@ -347,36 +402,105 @@ angular
 
         }
 
+
         $scope.showAddDialog = function () {
 
-            dialog.showAddDialog('/api/customers/options?selected=CustomerID%20Name', $scope.addCustomers, $scope.list, 'KHÁCH HÀNG QUẢN LÝ');
+            var url = undefined,
+                callback = undefined,
+                title = undefined;
+
+            switch ($scope.mode) {
+                case 'customer':
+                    url = '/api/customers/options';
+                    callback = function (records) {
+
+                        var array = records.map(function (item) {
+
+                            return item.Value;
+
+                        });
+
+                        $http.put('/api/customers/', {
+
+                            customerList: array,
+                            EmplID: $scope.mainInfo.EmplID
+
+                        }).then(function (response) {
+
+
+                            $rootScope.$emit('reload', {
+                                id: 'customer-table'
+                            });
+
+
+                        });
+
+                    }
+                    title = 'KHÁCH HÀNG QUẢN LÝ';
+                    break;
+
+                case 'study':
+                    url = '/api/studies/options';
+                    callback = function (records) {
+
+                        var array = records.map(function (item) {
+
+                            return item.Value;
+
+                        });
+
+                        $http.put('/api/studies/', {
+
+                            studyList: array,
+                            StudyEmpl: $scope.mainInfo.EmplID
+
+                        }).then(function (response) {
+
+
+                            $rootScope.$emit('reload', {
+                                id: 'study-table'
+                            });
+
+
+                        });
+
+                    }
+                    title = 'NHÂN VIÊN NGHIÊN CỨU';
+                    break;
+                case 'instruct':
+                    url = '/api/studies/options';
+                    callback = function (records) {
+
+                        var array = records.map(function (item) {
+
+                            return item.Value;
+
+                        });
+
+                        console.log(array);
+                        $http.put('/api/studies/', {
+
+                            studyList: array,
+                            Instructor: $scope.mainInfo.EmplID
+
+                        }).then(function (response) {
+
+                            console.log('reload');
+                            $rootScope.$emit('reload', {
+                                id: 'study-table'
+                            });
+
+
+                        });
+
+                    }
+                    title = 'NHÂN VIÊN HƯỚNG DẪN';
+            }
+
+            dialog.showAddDialog(url, callback, $scope.list, title);
 
         }
 
-        $scope.addCustomers = function (records) {
-
-            var array = records.map(function (item) {
-
-                return item.Value;
-
-            });
-
-            $http.put('/api/customers/', {
-
-                customerList: array,
-                EmplID: $scope.mainInfo.EmplID
-
-            }).then(function (response) {
-
-
-                $rootScope.$emit('reload', {
-                    id: 'customer-table'
-                });
-
-
-            });
-
-        }
 
         $scope.deleteAction = function (postData) {
 

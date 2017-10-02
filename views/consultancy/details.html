@@ -17,7 +17,7 @@
                     <!-- <div style="display: inline-block; position: relative; top: 8px">
                         <a ui-sref="customer.details({ CustomerID: info.CustomerID })"><span class="fa fa-2x fa-user"></span></a>
                     </div> -->
-                    <select class="form-control custom-input" ng-model="info.CustomerID" style="display: inline-block">
+                    <select class="form-control custom-input" ng-model="info.CustomerID" style="display: inline-block" ng-disable="!auth.isPermitted('consultancy-edit')">
                                         <option ng-repeat="obj in cusList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
                                     </select>
 
@@ -27,26 +27,20 @@
                     <!-- <div style="display: inline-block; position: relative; top: 8px">
                         <a ui-sref="employee.details({ EmplID: info.ConsultingEmplID })"><span class="fa fa-2x fa-user"></span></a>
                     </div> -->
-                    <select class="form-control custom-input" ng-model="info.ConsultingEmplID" style="display: inline-block">
+                    <select class="form-control custom-input" ng-model="info.ConsultingEmplID" style="display: inline-block" ng-disable="!auth.isPermitted('consultancy-edit')">
                                 <option ng-repeat="obj in empList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
                             </select>
 
                 </div>
                 <div class="form-group">
-                    <label style="display: block">Nhân viên được tư vấn</label>
-                    <!-- <div style="display: inline-block; position: relative; top: 8px">
-                        <a ui-sref="employee.details({ EmplID: info.ConsultedEmplID })"><span class="fa fa-2x fa-search"></span></a>
-                    </div> -->
-                    <select class="form-control custom-input" ng-model="info.ConsultedEmplID" style="display: inline-block">
-                                    <option ng-repeat="obj in empList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
-                                </select>
-
+                    <label style="display: block">Người được tư vấn</label>
+                    <input type="text" name="ConsultedPerson" class="form-control custom-input" value="{{mainInfo.ConsultedPerson}}" ng-disable="!auth.isPermitted('consultancy-edit')">
                 </div>
                 <div class="form-group">
                     <label>Thời gian</label>
-                    <input type="text" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" date-picker required>
+                    <input type="text" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" date-picker required ng-disable="!auth.isPermitted('consultancy-edit')">
                 </div>
-                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }" ng-if="auth.isPermitted('consultancy-edit')">
                     <button type="submit" class="button has-icon primary submit">
                                                     <div ng-show="isLoading">
                                                         Đang lưu ...

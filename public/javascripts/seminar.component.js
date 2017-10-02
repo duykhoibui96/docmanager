@@ -135,8 +135,9 @@ angular
 
 
     })
-    .controller('seminarDetailsCtrl', function ($scope, info, employees, $http, dialog) {
+    .controller('seminarDetailsCtrl', function ($scope, info, employees, $http, dialog, auth) {
 
+        $scope.auth = auth;
         $scope.mainInfo = info;
         $scope.mode = 'info';
         $scope.info = {};

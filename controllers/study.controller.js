@@ -78,7 +78,30 @@ module.exports = {
     listForOptions: function (req, res) {
 
         var selected = req.query.selected;
-        Study.find().select(selected).exec(function (err, docs) {
+        var filterObj = {};
+        if (req.query.search) {
+
+            var search = req.query.search;
+            var objAsNumber = Number(search);
+            console.log(objAsNumber);
+            if (isNaN(objAsNumber))
+                filterObj = {
+
+                    Name: { "$regex": search, "$options": "i" }
+
+                };
+            else
+                filterObj = {
+
+                    StudyID: objAsNumber
+
+                };
+
+
+            selected = 'StudyID Name';
+
+        }
+        Study.find(filterObj).select(selected).exec(function (err, docs) {
 
             responseHelper.sendTableOptions(res, docs, err);
 
@@ -146,6 +169,39 @@ module.exports = {
             responseHelper.sendTableDetails(res, doc, err);
 
         })
+
+    },
+
+    updateMany: function (req, res) {
+
+        var studyList = req.body.studyList;
+        var updateObj = req.body.StudyEmpl ? {
+
+            $push: {
+                StudyEmpl: req.body.StudyEmpl
+            }
+
+        } : {
+
+            $push: {
+                Instructor: req.body.Instructor
+            }
+
+
+        }
+
+        Study.update({
+
+            StudyID: {
+                $in: studyList
+            }
+
+        }, updateObj , function (err) {
+
+            responseHelper.sendResponse(res,'OK',err);
+
+        })
+
 
     },
 

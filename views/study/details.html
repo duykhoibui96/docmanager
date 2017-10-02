@@ -6,12 +6,14 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <ul class="nav nav-pills" style="margin-bottom: 50px">
-            <li class="main-select" ng-class="{ active: mode == 'info'}" ng-click="switchMode('info')"><a href="javascript:;">Thông tin</a></li>
-            <li class="main-select" ng-class="{ active: mode == 'study-empl'}" ng-click="switchMode('study-empl')"><a href="javascript:;">Nhân viên nghiên cứu</a></li>
-            <li class="main-select" ng-class="{ active: mode == 'instruct-empl'}" ng-click="switchMode('instruct-empl')"><a href="javascript:;">Nhân viên hướng dẫn</a></li>
-        </ul>
-        <div ng-switch="mode">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" style="margin-bottom: 50px">
+                <li class="col-md-4"  ng-class="{ active: mode == 'info'}" ng-click="switchMode('info')"><a href="javascript:;">Thông tin</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'study-empl'}" ng-click="switchMode('study-empl')"><a href="javascript:;">Nhân viên nghiên cứu</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'instruct-empl'}" ng-click="switchMode('instruct-empl')"><a href="javascript:;">Nhân viên hướng dẫn</a></li>
+            </ul>
+        </div>
+        <div ng-switch="mode" style="min-height: 500px">
             <form ng-submit="update()" class="form-horizontal custom-form" ng-switch-when="info">
                 <div class="form-group">
                     <label>Mã nghiên cứu</label>
@@ -20,30 +22,30 @@
                 </div>
                 <div class="form-group">
                     <label>Tên nghiên cứu</label>
-                    <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading"
+                    <input type="text" name="Name" class="form-control custom-input" ng-model="info.Name" value="{{mainInfo.Name}}" ng-disable="isLoading || !auth.isPermitted('study-edit')"
                         required>
                 </div>
                 <div class="form-group">
                     <label>Nội dung nghiên cứu</label>
                     <input type="text" name="Content" class="form-control custom-input" ng-model="info.Content" value="{{mainInfo.Content}}"
-                        ng-disable="isLoading" required>
+                        ng-disable="isLoading || !auth.isPermitted('study-edit')" required>
                 </div>
                 <div class="form-group">
                     <label style="display: block">Hội thảo liên quan</label>
                     <!-- <div style="display: inline-block; position: relative; top: 8px">
                         <a ui-sref="seminar.details({ SeminarID: info.Seminar })"><span class="fa fa-2x fa-user"></span></a>
                     </div> -->
-                    <select class="form-control custom-input" ng-model="info.Seminar" style="display: inline-block">
+                    <select class="form-control custom-input" ng-model="info.Seminar" style="display: inline-block" ng-disable="isLoading || !auth.isPermitted('study-edit')">
                                         <option ng-repeat="obj in semList" value="{{obj.Value}}">{{obj.DisplayText}}</option>
                                     </select>
 
                 </div>
                 <div class="form-group">
                     <label>Thời gian nghiên cứu</label>
-                    <input type="text" name="Time" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" ng-disable="isLoading"
+                    <input type="text" name="Time" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" ng-disable="isLoading || !auth.isPermitted('study-edit')"
                         required date-picker>
                 </div>
-                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }">
+                <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }" ng-if="auth.isPermitted('study-edit')">
                     <button type="submit" class="button has-icon primary submit">
                                                         <div ng-show="isLoading">
                                                             Đang lưu ...
@@ -57,7 +59,7 @@
             </form>
             <div class="table-responsive" ng-switch-when="study-empl">
                 <search-box for="employee"></search-box>
-                <div class="text-right">
+                <div class="text-right" ng-if="auth.isPermitted('study-studyempl-edit')">
                     <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nhân viên</button>
                 </div>
                 <div class="table-responsive">
@@ -66,7 +68,7 @@
             </div>
             <div class="table-responsive" ng-switch-when="instruct-empl">
                 <search-box for="employee"></search-box>
-                <div class="text-right">
+                <div class="text-right" ng-if="auth.isPermitted('study-instructor-edit')">
                     <button type="submit" class="button has-icon primary add" ng-click="showAddDialog()">Thêm nhân viên</button>
                 </div>
                 <div class="table-responsive">

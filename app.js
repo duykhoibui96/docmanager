@@ -13,6 +13,7 @@ var customerApi = require('./routes/api/customer');
 var consultancyApi = require('./routes/api/consultancy');
 var studyApi = require('./routes/api/study');
 var seminarApi = require('./routes/api/seminar');
+var dbhelper = require('./helpers/database.helper');
 
 var app = express();
 
@@ -41,5 +42,6 @@ app.use('/api/consultancies', consultancyApi);
 app.use('/api/studies', studyApi);
 app.use('/api/seminars', seminarApi);
 
+//dbhelper();
 
 module.exports = app;

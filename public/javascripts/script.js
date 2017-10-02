@@ -4,13 +4,13 @@ angular
         'app-component', //for jtable and filter box
         'account', //for account authentication
         'employee', //for employee list and details
-        'customer',//for customer list and details
-        'consultancy',//for consultancy list and details
-        'study',//for study list and details
-        'seminar',//for seminar list and details
-        'uploader',//for file upload
-        'dialog',
-        'helper'
+        'customer', //for customer list and details
+        'consultancy', //for consultancy list and details
+        'study', //for study list and details
+        'seminar', //for seminar list and details
+        'uploader', //for file upload
+        'dialog', //for dialog methods
+        'helper' //for helper service
     ])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
@@ -34,8 +34,42 @@ angular
         }]);
 
 
+        $stateProvider
+            .state('dashboard', {
+
+                url: '/dashboard',
+                templateUrl: '/views/dashboard.html',
+                onEnter: function ($rootScope) {
+
+                    $rootScope.option = '';
+
+                },
+                controller: function($scope) {
+
+                    $scope.createForbidden = true;
+                    $scope.updateForbidden = true;
+                    $scope.deleteForbidden = true;
+                    $scope.filterList = {
+
+                        recent: true
+
+                    };
+
+                    $scope.mode = 'intro';
+                    $scope.$watch('mode', function(newValue, oldValue){
+
+                        console.log(newValue);
+                        
+                    })
+
+
+                }
+
+
+            });
+
         $urlRouterProvider
-            .otherwise('/employee');
+            .otherwise('/dashboard');
 
     })
     .run(function ($transitions, $rootScope, $localStorage, $window, $state, loading, auth) {
