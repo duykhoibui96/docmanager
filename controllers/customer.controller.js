@@ -146,7 +146,7 @@ module.exports = {
             }
         }, function (err) {
 
-            responseHelper.sendResponse(err, 'OK');
+            responseHelper.sendResponse(res,'OK',err);
 
         })
 
