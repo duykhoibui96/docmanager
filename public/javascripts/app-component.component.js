@@ -385,6 +385,7 @@ angular
 
                             })
 
+                        $scope.list = options;
                         return options;
 
                     })
@@ -427,6 +428,7 @@ angular
 
                 // });
 
+                $scope.list = [];
                 var getPlaceholder = function () {
 
                     if ($scope.url.includes('customers'))
