@@ -166,6 +166,8 @@ angular
 
             $scope.isLoading = true;
             var url = '/api/studies/' + $scope.mainInfo.StudyID;
+            if (isNaN($scope.info.Seminar))
+                $scope.info.Seminar = $scope.info.Seminar.Value;
             $http.put(url, $scope.info).then(function (response) {
 
                 $scope.isLoading = false;

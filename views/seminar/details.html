@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label>Thời gian nghiên cứu</label>
-                <input type="text" name="Time" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" ng-disable="isLoading || !auth.isPermitted('seminar-edit')"
+                <input id="time" type="text" name="Time" class="form-control custom-input" ng-model="info.Time" value="{{mainInfo.Time}}" ng-disable="isLoading || !auth.isPermitted('seminar-edit')"
                     required date-picker>
             </div>
             <div class="text-right" ng-style="{ 'opacity': isLoading ? '0.5' : '1' }" ng-if="auth.isPermitted('seminar-edit')">

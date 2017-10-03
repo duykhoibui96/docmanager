@@ -363,7 +363,7 @@ angular
             scope: {
 
                 selected: '=',
-                list: '=',
+                value: '=',
                 placeholder: '@',
                 url: '=',
                 name: '@',
@@ -372,6 +372,22 @@ angular
             },
             templateUrl: '/views/components/autocomplete.component.html',
             controller: function ($scope, $http) {
+
+                if ($scope.value && $scope.url) {
+                    $scope.$watch('value', function (newValue) {
+
+                        console.log(newValue);
+                        if (!isNaN(newValue)) {
+                            var url = $scope.url.slice(0, $scope.url.indexOf('/options')) + '/' + newValue;
+                            $http.get(url).then(function (response) {
+
+                                var name = response.data.Name;
+                                $scope.value = $scope.value + ' - ' + name;
+                            })
+                        }
+                    })
+
+                }
 
                 $scope.getArray = function (search) {
 
@@ -385,7 +401,6 @@ angular
 
                             })
 
-                        $scope.list = options;
                         return options;
 
                     })

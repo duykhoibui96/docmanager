@@ -29,7 +29,7 @@ angular
 
         }
 
-        
+
 
         this.getUsername = function () {
 
@@ -39,17 +39,17 @@ angular
 
         }
 
-        this.isPermitted = function(permissionName) {
+        this.isPermitted = function (permissionName) {
 
             if (!$localStorage.auth || !$localStorage.auth.permissions)
                 return false;
 
-            return $localStorage.auth.permissions.find(function(item){
+            return $localStorage.auth.permissions.find(function (item) {
 
                 return item.includes(permissionName);
 
             });
-            
+
 
         }
 
@@ -58,6 +58,24 @@ angular
             if ($localStorage.auth)
                 delete $localStorage.auth;
             $state.transitionTo('login');
+
+        }
+
+    })
+    .directive('datePicker', function () {
+
+        return {
+
+            restrict: 'EA',
+            link: function (scope, element) {
+
+                $(function () {
+                    $(`#${element[0].id}`).datepicker({
+                        dateFormat: 'dd-mm-yy'
+                    });
+                });
+
+            }
 
         }
 
@@ -72,7 +90,7 @@ angular
         }
 
     })
-    .directive('compareTo', function () {//For confirm password input textbox
+    .directive('compareTo', function () { //For confirm password input textbox
         return {
             require: "ngModel",
             scope: {
@@ -90,21 +108,21 @@ angular
             }
         };
     })
-    .filter('objLimitTo', function(){ //Limit numbers of element display in array by ng-repeat
-        return function(obj, limit){
+    .filter('objLimitTo', function () { //Limit numbers of element display in array by ng-repeat
+        return function (obj, limit) {
             var keys = Object.keys(obj);
-            if(keys.length < 1) return [];
-    
+            if (keys.length < 1) return [];
+
             var ret = new Object();
             var count = 0;
-            angular.forEach(keys, function(key, arrayIndex){
-                if (key !== '_id'){
+            angular.forEach(keys, function (key, arrayIndex) {
+                if (key !== '_id') {
 
-                    if(count >= limit) return false;
+                    if (count >= limit) return false;
                     ret[key] = obj[key];
                     count++;
 
-                }       
+                }
             });
             return ret;
         };

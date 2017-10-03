@@ -127,14 +127,8 @@ angular
 
                         title: 'Nhân viên tư vấn',
                         width: '20%',
-                        // options: 'api/employees/options?selected=EmplID%20Name',
-                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultingEmplID') : true,
-                        input: function (data) {
-
-                            console.log($scope.emplList);
-                            return `<input type="text" name="ConsultingEmplID" uib-typeahead="item as item.DisplayText for item in emplList | optionFilter: $viewValue | limitTo: 10" class="form-control" typeahead-template-url="/views/components/option.component.html" placeholder="Nhập mã hoặc tên nhân viên" required>`;
-
-                        }
+                        options: 'api/employees/options?selected=EmplID%20Name',
+                        list: $scope.hideColumn ? !$scope.hideColumn.includes('ConsultingEmplID') : true
 
                     },
 
@@ -209,6 +203,11 @@ angular
 
             $scope.isLoading = true;
             var url = '/api/consultancies/' + $scope.mainInfo.ConsID;
+            console.log($scope.info.CustomerID);
+            if (isNaN($scope.info.CustomerID))
+                $scope.info.CustomerID = $scope.info.CustomerID.Value
+            if (isNaN($scope.info.ConsultingEmplID))
+                $scope.info.ConsultingEmplID = $scope.info.ConsultingEmplID.Value;
             $http.put(url, $scope.info).then(function (response) {
 
                 $scope.isLoading = false;
