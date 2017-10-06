@@ -23,29 +23,29 @@ angular
                 url: '/list',
                 templateUrl: 'views/consultancy/list.html',
                 controller: 'consultancyListCtrl',
-                resolve: {
+                // resolve: {
 
-                    employees: function ($http) {
+                //     employees: function ($http) {
 
-                        return $http.post('api/employees/options?selected=EmplID%20Name').then(function (response) {
+                //         return $http.post('api/employees/options?selected=EmplID%20Name').then(function (response) {
 
-                            return response.data;
+                //             return response.data;
 
-                        })
+                //         })
 
-                    },
+                //     },
 
-                    customers: function ($http) {
+                //     customers: function ($http) {
 
-                        return $http.post('api/customers/options?selected=CustomerID%20Name').then(function (response) {
+                //         return $http.post('api/customers/options?selected=CustomerID%20Name').then(function (response) {
 
-                            return response.data;
+                //             return response.data;
 
-                        })
+                //         })
 
-                    }
+                //     }
 
-                }
+                // }
 
             })
             .state('consultancy.details', {
@@ -172,10 +172,8 @@ angular
         }
 
     })
-    .controller('consultancyListCtrl', function ($scope, $rootScope, employees, customers) {
+    .controller('consultancyListCtrl', function ($scope, $rootScope) {
 
-        $scope.emplList = employees.Options;
-        $scope.customerList = customers.Options;
 
     })
     .controller('consultancyDetailsCtrl', function ($scope, info, employees, customers, $http, dialog, auth) {

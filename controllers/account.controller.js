@@ -1,5 +1,7 @@
 var account = require('../models/Account');
 var Permission = require('../models/Permission');
+var config = require('../helpers/config.helper');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
 
@@ -35,6 +37,14 @@ module.exports = {
                             return item.Name;
 
                         })
+
+                        retObj.token = jwt.sign({
+
+                            EmplID: retObj.EmplID,
+                            permissions: retObj.permissions
+
+                        }, config.secretkey);
+                        
                         res.send(retObj);
 
                     })

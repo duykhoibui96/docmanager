@@ -3,6 +3,8 @@ var controller = require('../../controllers/seminar.controller');
 var auth = require('../../helpers/authentication.helper');
 var router = express.Router();
 
+router.use(auth);
+
 router.route('/')
     .get(controller.list)
     .post(controller.create)

@@ -33,7 +33,8 @@ angular
                 $localStorage.auth = {
 
                     username: data.Username,
-                    token: data.EmplID,
+                    EmplID: data.EmplID,
+                    token: data.token,
                     permissions: data.permissions
 
 

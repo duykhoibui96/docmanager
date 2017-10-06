@@ -22,6 +22,8 @@ var upload = multer({
     storage: storage
 }).array('uplfiles');
 
+router.use(auth);
+
 router.route('/files/:id')
     .post(function (req, res) {
         upload(req, res, function (err) {

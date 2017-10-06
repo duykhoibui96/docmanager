@@ -113,21 +113,22 @@ angular
 
             console.log('On error');
             console.log(trans);
-            if (trans._error.type === 5) {
-                $state.reload();
-                /*$rootScope.showConfirm('Back to login page - Continue?', function(isContinue){
+            // if (trans._error.type === 5) {
+            //     $state.reload();
+            //     /*$rootScope.showConfirm('Back to login page - Continue?', function(isContinue){
             
-                            if (isContinue)
-                                $rootScope.logout();
-                            else
-                                $state.reload();
+            //                 if (isContinue)
+            //                     $rootScope.logout();
+            //                 else
+            //                     $state.reload();
             
-                        })*/
+            //             })*/
 
-            } else if (!trans._error.redirected) {
+            // } else 
+            if (!trans._error.redirected) {
 
                 console.log(trans);
-                loading.start();
+                loading.stop();
 
             }
 

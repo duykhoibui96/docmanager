@@ -17,7 +17,7 @@ angular
 
                     info: function ($http, $localStorage) {
 
-                        var id = $localStorage.auth.token;
+                        var id = $localStorage.auth.EmplID;
                         return $http.get('api/employees/' + id).then(function (response) {
 
                             return response.data;
