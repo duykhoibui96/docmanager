@@ -443,6 +443,7 @@ angular
 
                 // });
 
+                $scope.selected = {};
                 $scope.list = [];
                 var getPlaceholder = function () {
 
