@@ -44,27 +44,7 @@ angular
                     $rootScope.option = '';
 
                 },
-                controller: function($scope) {
-
-                    $scope.createForbidden = true;
-                    $scope.updateForbidden = true;
-                    $scope.deleteForbidden = true;
-                    $scope.filterList = {
-
-                        recent: true
-
-                    };
-
-                    $scope.mode = 'intro';
-                    $scope.$watch('mode', function(newValue, oldValue){
-
-                        console.log(newValue);
-                        
-                    })
-
-
-                }
-
+                controller: 'dashboardCtrl'
 
             });
 
@@ -155,4 +135,28 @@ angular
 
         })
 
+    })
+    .controller('dashboardCtrl',function($scope){
+        
+        $scope.createForbidden = true;
+        $scope.updateForbidden = true;
+        $scope.deleteForbidden = true;
+        $scope.filterList = {
+
+            recent: true
+
+        };
+
+        $scope.mode = 'intro';
+        $scope.switchMode = function(mode){
+
+            $scope.mode = mode;
+            
+        }
+        $scope.$watch('mode', function(newValue, oldValue){
+
+            console.log(newValue);
+            
+        })
+        
     });

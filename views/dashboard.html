@@ -3,15 +3,15 @@
         <!-- tabs top -->
         <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li class="col-md-4" ng-class="{ active: mode == 'intro'}" ng-click="mode = 'intro'"><a href="javascript:;" data-toggle="tab">Giới thiệu</a></li>
-                <li class="col-md-4" ng-class="{ active: mode == 'consultancy'}" ng-click="mode = 'consultancy'"><a href="javascript:;" data-toggle="tab">Tư vấn gần đây</a></li>
-                <li class="col-md-4" ng-class="{ active: mode == 'study'}" ng-click="mode = 'study'"><a href="javascript:;" data-toggle="tab">Nghiên cứu gần đây</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'intro'}" ng-click="switchMode('intro')"><a href="javascript:;" data-toggle="tab">Giới thiệu</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'consultancy'}" ng-click="switchMode('consultancy')"><a href="javascript:;" data-toggle="tab">Tư vấn gần đây</a></li>
+                <li class="col-md-4" ng-class="{ active: mode == 'study'}" ng-click="switchMode('study')"><a href="javascript:;" data-toggle="tab">Nghiên cứu gần đây</a></li>
             </ul>
         </div>
     </div>
 </div>
 <!-- /tabs -->
-<div ng-switch on="mode">
+<div ng-switch="mode">
     <div ng-switch-when="intro">
         <div class="title title-icon-list">
             giới thiệu
