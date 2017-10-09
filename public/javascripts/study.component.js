@@ -213,6 +213,9 @@ angular
         $scope.for = 'employee';
         $scope.switchMode = function (mode) {
 
+            if (mode == $scope.mode)
+                return;
+
             switch (mode) {
 
                 case 'study-empl':
@@ -331,7 +334,7 @@ angular
         $scope.showAddDialog = function () {
 
             var exceptedList = $scope.mainInfo[$scope.emplType];
-            var title = $scope.emplType === 'StudyEmpl' ? 'NHÂN VIÊN NGHIÊN CỨU' : 'NHÂN VIÊN HƯỚNG DẪN'; 
+            var title = $scope.emplType === 'StudyEmpl' ? 'NHÂN VIÊN NGHIÊN CỨU' : 'NHÂN VIÊN HƯỚNG DẪN';
             dialog.showAddDialog('/api/employees/options', $scope.addEmployees, exceptedList, title);
 
         }

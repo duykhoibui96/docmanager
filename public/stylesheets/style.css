@@ -477,8 +477,6 @@ jtable select {
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     border-radius: 50%;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding-box;
     text-align: center;
     padding: 7px;
     font-size: 1em;
@@ -508,12 +506,22 @@ jtable select {
     text-align: left;
     padding: 10px 20px !important;
     display: block;
+    margin-right: 0px;
+    width: 100%;
 }
 
 .menu button:hover,
-.menu button:focus {
+.menu button:focus,
+.menu button.active {
     font-weight: bold;
-    border: none;
+}
+
+.menu button.active::before {
+
+    font-family: FontAwesome;
+    content: "\f040";
+    padding-right: 20px;
+
 }
 
 

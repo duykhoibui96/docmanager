@@ -1,20 +1,19 @@
 /* CSS used here will be applied after bootstrap.css */
+
 .tabbable {
-
     margin-bottom: 50px;
-
 }
 
 .nav-tabs img {
     width: 100%;
 }
-.nav-tabs a {
 
+.nav-tabs a {
     text-transform: uppercase;
     font-size: 120%;
     font-weight: bold;
-
 }
+
 .nav-tabs>.active>a,
 .nav-tabs>.active>a:hover {
     outline: none;
@@ -64,3 +63,12 @@
 .pill-content>.active {
     display: block;
 }
+
+.nav-tabs>.active>a{
+
+    color: white !important;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #2d89b4, #297ca3) !important;
+
+}
+

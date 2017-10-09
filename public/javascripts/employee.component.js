@@ -217,8 +217,10 @@ angular
         $scope.createForbidden = true;
         $scope.updateForbidden = true;
 
-        $scope.switchMode = function (mode) {
+        $scope.switchMode = function (mode,event) {
 
+            if (mode === $scope.mode)
+                return;
             switch (mode) {
                 case 'customer':
                     $scope.for = 'customer';

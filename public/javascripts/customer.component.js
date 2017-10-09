@@ -249,6 +249,9 @@ angular
 
         $scope.switchMode = function (mode) {
 
+            if (mode == $scope.mode)
+                return;
+                
             switch (mode) {
                 case 'employee':
 
