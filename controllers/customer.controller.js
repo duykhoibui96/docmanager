@@ -134,6 +134,8 @@ module.exports = {
         var customerList = req.body.customerList;
         var id = req.body.EmplID;
 
+        console.log('Update many ' + id);
+        console.log(customerList);
         Customer.update({
 
             CustomerID: {
@@ -144,7 +146,7 @@ module.exports = {
             $push: {
                 ResponsibleEmpl: id
             }
-        }, function (err) {
+        }, {multi: true}, function (err) {
 
             responseHelper.sendResponse(res,'OK',err);
 
