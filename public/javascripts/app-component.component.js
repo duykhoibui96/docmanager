@@ -356,6 +356,7 @@ angular
             templateUrl: '/views/components/autocomplete.component.html',
             controller: function ($scope, $http) {
 
+                console.log($scope.excepted);
                 if ($scope.value && $scope.url) {
                     $scope.$watch('value', function (newValue) {
 
@@ -376,13 +377,19 @@ angular
 
                     return $http.post($scope.url + '?search=' + search).then(function (response) {
 
-                        var options = response.data.Options;
-                        if ($scope.excepted)
-                            options = options.filter(function (item) {
+                        let options = response.data.Options;
+                        
+                        
+                        if ($scope.excepted) {
+ 
+                            //console.log('ok');
+                            options = options.filter(function(item){
 
-                                return $scope.excepted.indexOf(item.Value) == -1;
+                                return $scope.excepted.indexOf(item.Value) === -1;
 
-                            })
+                            });
+
+                        }
 
                         return options;
 
@@ -426,6 +433,7 @@ angular
 
                 // });
 
+                $scope.exceptedList = Object.assign([], $scope.excepted);
                 $scope.selected = {};
                 $scope.list = [];
                 var getPlaceholder = function () {
@@ -444,22 +452,25 @@ angular
                 $scope.addList = [];
                 $scope.add = function () {
 
-                    if ($scope.list.indexOf($scope.selected) == -1)
-                        return;
 
-                    if ($scope.addList.indexOf($scope.selected) >= 0) {
+                    if ($scope.addList.find(item => item.Value === $scope.selected.Value)) {
 
+                        console.log('same');
                         return;
 
                     }
 
                     $scope.addList.push($scope.selected);
+                    $scope.exceptedList.push($scope.selected.Value);
                     $scope.selected = undefined;
 
                 }
 
                 $scope.remove = function (index) {
 
+                    let deletedIndex = $scope.exceptedList.findIndex(item => item === $scope.addList[index].Value);
+                    if (deletedIndex >= 0)
+                        $scope.exceptedList.splice(deletedIndex, 1);
                     $scope.addList.splice(index, 1);
 
                 }
