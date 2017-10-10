@@ -1,6 +1,6 @@
 var account = require('../models/Account');
 var Permission = require('../models/Permission');
-var config = require('../helpers/config.helper');
+var config = require('../config/secret.json');
 var jwt = require('jsonwebtoken');
 
 module.exports = {
@@ -43,7 +43,7 @@ module.exports = {
                             EmplID: retObj.EmplID,
                             permissions: retObj.permissions
 
-                        }, config.secretkey);
+                        }, config.secretKey);
                         
                         res.send(retObj);
 

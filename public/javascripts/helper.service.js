@@ -90,6 +90,23 @@ angular
         }
 
     })
+    .filter('optionFilter', function () { //For filtering in array by ng-repeat
+        return function (array, search) {
+
+            if (!search)
+                return array;
+
+            var filteredArray = array.filter(function (item) {
+
+                return item.DisplayText.includes(search);
+
+            })
+
+            return filteredArray;
+
+
+        };
+    })
     .directive('compareTo', function () { //For confirm password input textbox
         return {
             require: "ngModel",

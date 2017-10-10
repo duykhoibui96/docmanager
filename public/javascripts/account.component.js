@@ -40,7 +40,7 @@ angular
 
                 }
                 console.log($localStorage.auth);
-                $state.transitionTo('info');
+                $state.transitionTo('dashboard');
 
 
             }, function (err) {

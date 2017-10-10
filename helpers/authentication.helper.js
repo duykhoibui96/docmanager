@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-var config = require('./config.helper');
+var config = require('../config/secret.json');
 module.exports = function (req, res, next) {
 
     var token = req.headers['token'];
@@ -8,14 +8,21 @@ module.exports = function (req, res, next) {
 
     if (path.includes('options') || path.includes('authentication') || path.includes('files'))
         next();
+    else if (!token)
+        res.status(401).send({
+
+            Result: 'ERROR',
+            Message: 'Unauthorized'
+
+        });
     else
-        jwt.verify(token, config.secretkey, function (err, decoded) {
+        jwt.verify(token, config.secretKey, function (err, decoded) {
             if (err) {
-                console.log('Unauthorized');
-                res.status(401).send({
+                console.log('Forbidden');
+                res.status(403).send({
 
                     Result: 'ERROR',
-                    Message: 'Unauthorized'
+                    Message: 'Forbidden'
 
                 });
             } else {
