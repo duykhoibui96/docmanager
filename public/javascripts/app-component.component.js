@@ -130,7 +130,7 @@ angular
             restrict: 'EA',
             scope: true,
             template: '<div id="{{id}}"></div>',
-            controller: function ($scope, $rootScope) {
+            controller: function ($scope, $rootScope,dialog) {
 
                 $(document).ready(function () {
 
@@ -171,16 +171,22 @@ angular
 
                         },
                         recordAdded: function (event, data) {
+
+                            dialog.notify('success','Thêm dữ liệu thành công');
                             if (data.record) {
                                 $(selector).jtable('load');
                             }
                         },
                         recordUpdated: function (event, data) {
+
+                            dialog.notify('success','Cập nhật dữ liệu thành công');
                             if (data.record) {
                                 $(selector).jtable('load');
                             }
                         },
                         recordDeleted: function (event, data) {
+
+                            dialog.notify('success','Xóa dữ liệu thành công');
                             if (data.record) {
                                 $(selector).jtable('load');
                             }
