@@ -161,9 +161,9 @@ angular
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    dialog.showAlert('error', res.Message);
+                    dialog.notify('error', res.Message);
                 else {
-                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.notify('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 

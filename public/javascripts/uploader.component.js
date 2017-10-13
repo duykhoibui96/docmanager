@@ -1,6 +1,6 @@
 angular
     .module('uploader', [])
-    .directive('uploader', function ($http, $rootScope) {
+    .directive('uploader', function ($http, $rootScope, dialog) {
 
         return {
 
@@ -34,6 +34,7 @@ angular
                             data: records
 
                         });
+                        dialog.notify('success', 'Upload tài liệu thành công');
                     });
 
                 });

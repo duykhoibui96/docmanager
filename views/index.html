@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/lib/jqueryui/themes/flick/jquery-ui.min.css">
     <link rel="stylesheet" href="/lib/jtable/lib/themes/jqueryui/jtable_jqueryui.min.css">
     <link href="/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/lib/angular-ui-notification/dist/angular-ui-notification.min.css">
 
     <!-- Custom styles -->
     <link rel="stylesheet" href="/assets/stylesheets/responsive.css">
@@ -40,6 +41,7 @@
     <script src="/lib/angular-animate/angular-animate.min.js"></script>
     <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/lib/angular-ui-notification/dist/angular-ui-notification.min.js"></script>
 
 
     <!-- Custom scripts -->
@@ -102,11 +104,8 @@
             </nav>
         </div>
     </header>
-    <div class="loading animation-slide" ng-show="isLoading">
-        <i class="fa fa-spinner fa-spin"></i> LOADING...
-    </div>
     <div class="container-fluid" style="padding: 0; background: white">
-        <div class="sidebar-container" data-spy="affix" data-offset-top="115">
+        <!-- <div class="sidebar-container" data-spy="affix" data-offset-top="115">
             <div class="sidebar main-theme small" ng-show="sidebarOptions.length > 0">
                 <div class="sidebar-content">
                     <h3 class="side-title">CHỨC NĂNG</h3>
@@ -117,7 +116,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- <div class="col-xs-12" ng-class="sidebarOptions.length > 0 ? 'col-sm-10' : 'col-sm-12'"> -->
         <div ui-view class="container-fluid animation-zoom content col-sm-10 col-sm-offset-1 col-xs-12" id="content"></div>
         <!-- </div> -->

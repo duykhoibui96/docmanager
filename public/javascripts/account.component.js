@@ -13,10 +13,11 @@ angular
             })
 
     })
-    .controller('accountCtrl', function ($scope, $state, $localStorage,$http,dialog) {
+    .controller('accountCtrl', function ($scope, $state, $localStorage,$http) {
 
         $scope.signin = function () {
 
+            $scope.error = undefined;
             if ($scope.isAuthenticating)
                 return;
             $scope.isAuthenticating = true;
@@ -49,7 +50,7 @@ angular
                 switch(err.status)
                 {
                     case 406:
-                        dialog.showAlert('error',err.data);
+                        $scope.error = err.data;
                 }
 
 

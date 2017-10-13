@@ -1,8 +1,28 @@
 angular
-    .module('dialog', ['ui.bootstrap', 'uib/template/modal/window.html'])
-    .service('dialog', function ($uibModal) { //methods for dialog
+    .module('dialog', ['ui.bootstrap', 'uib/template/modal/window.html', 'ui-notification'])
+    .config(function (NotificationProvider) {
+        NotificationProvider.setOptions({
+            delay: 2000,
+            startTop: 20,
+            startRight: 10,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'right',
+            positionY: 'top'
+        });
+    })
+    .service('dialog', function ($uibModal,Notification) { //methods for dialog
 
         var selectedDialog;
+
+        this.notify = function(type,msg) {
+
+            if (type === 'success')
+                Notification.success(msg);
+            else
+                Notification.error(msg);
+
+        }
 
         this.showAlert = function (type, msg) { //Show alert dialog
 
@@ -36,7 +56,7 @@ angular
 
         }
 
-        this.showAddDialog = function (url, callback, excepted, title) {//show add dialog
+        this.showAddDialog = function (url, callback, excepted, title) { //show add dialog
 
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -47,13 +67,13 @@ angular
                 controller: function ($scope, $uibModalInstance) {
 
                     $scope.excepted = excepted;
-                    $scope.callback = function(records){
-                     
+                    $scope.callback = function (records) {
+
                         if (records)
                             callback(records);
-                            
+
                         $scope.close();
-                        
+
                     }
                     $scope.close = function () {
 

@@ -27,7 +27,7 @@ angular
                 'responseError': function (response) {
 
                     if (response.status > 500)
-                        $rootScope.showAlert('error', 'Mất kết nối đến server');
+                        dialog.notify('error', 'Mất kết nối đến server');
                     return $q.reject(response);
                 }
             };

@@ -46,7 +46,7 @@
                                                         <a ui-sref="seminar.details({ SeminarID: info.Seminar })"><span class="fa fa-2x fa-user"></span></a>
                                                     </div> -->
                             <autocomplete placeholder="Nhập mã hoặc tên hội thảo" selected="info.Seminar" value="mainInfo.Seminar" url="'/api/seminars/options'"
-                                ng-disable="isLoading || !auth.isPermitted('study-edit')"></autocomplete>
+                                ng-disable="isLoading || !auth.isPermitted('study-edit')" not-important="true"></autocomplete>
 
                         </div>
                     </div>

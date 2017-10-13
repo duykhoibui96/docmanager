@@ -350,12 +350,14 @@ angular
                 placeholder: '@',
                 url: '=',
                 name: '@',
-                excepted: '='
+                excepted: '=',
+                notImportant: '='
 
             },
             templateUrl: '/views/components/autocomplete.component.html',
             controller: function ($scope, $http) {
 
+                $scope.required = $scope.notImportant === undefined || !$scope.notImportant;
                 console.log($scope.excepted);
                 if ($scope.value && $scope.url) {
                     $scope.$watch('value', function (newValue) {

@@ -166,16 +166,16 @@ angular
 
             $scope.isLoading = true;
             var url = '/api/studies/' + $scope.mainInfo.StudyID;
-            if (isNaN($scope.info.Seminar))
+            if ($scope.info.Seminar && isNaN($scope.info.Seminar))
                 $scope.info.Seminar = $scope.info.Seminar.Value;
             $http.put(url, $scope.info).then(function (response) {
 
                 $scope.isLoading = false;
                 var res = response.data;
                 if (res.Result === 'ERROR')
-                    dialog.showAlert('error', res.Message);
+                    dialog.notify('error', res.Message);
                 else {
-                    dialog.showAlert('success', 'Cập nhật dữ liệu thành công');
+                    dialog.notify('success', 'Cập nhật dữ liệu thành công');
                     $scope.mainInfo = res.Record;
                 }
 
